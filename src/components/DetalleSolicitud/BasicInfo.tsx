@@ -1,4 +1,4 @@
-import { Solicitud } from "../../Interfaces/Solicitud"
+import { Solicitud } from "../../Interfaces/Isolicitud"
 import { Grid, TextField, MenuItem } from '@mui/material'
 import { ESTADO, NIVEL } from "../../Services/constants"
 import Ifacultad from "../../Interfaces/Ifacultad"

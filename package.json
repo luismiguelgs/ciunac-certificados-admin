@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.16",
     "@mui/x-data-grid": "^6.18.0",
+    "@react-input/mask": "^1.0.20",
     "apexcharts": "^3.44.0",
     "chart.js": "^4.4.0",
     "exceljs": "^4.4.0",

@@ -1,10 +1,13 @@
-export interface SolicitudVal {
+export interface IsolicitudVal {
     apellidos:boolean,
     nombres:boolean,
     celular:boolean,
     dni:boolean,
-    email:boolean,
     numero_voucher:boolean,
     fecha_pago:boolean,
-    codigo_ciunac?:boolean
+    solicitud:boolean,
+    idioma:boolean,
+    nivel:boolean,
+    pago:boolean,
+    codigo:boolean
 }

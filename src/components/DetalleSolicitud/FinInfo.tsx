@@ -1,5 +1,5 @@
 import { Grid, TextField, MenuItem,InputAdornment } from '@mui/material'
-import { Solicitud } from '../../Interfaces/Solicitud'
+import { Solicitud } from '../../Interfaces/Isolicitud'
 import Icertificado from '../../Interfaces/Icertificado'
 import Link from '@mui/material/Link';
 import pdfLogo from '../../assets/pdf.png'
@@ -13,7 +13,7 @@ type Props={
 
 export default function FinInfo({item,handleChange, edit, tipoSolicitud}:Props)
 {
-    const archivo = item.voucher.split('?')[0].slice(-3);
+    const archivo = item.voucher?.split('?')[0].slice(-3);
     
     return(
         <Grid container spacing={2}>

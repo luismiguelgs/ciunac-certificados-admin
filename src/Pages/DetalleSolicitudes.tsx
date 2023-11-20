@@ -1,8 +1,7 @@
 import { Grid, Button } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { selectItem, updateItem } from '../Services/solicitudes';
 import React, { useState, useEffect } from "react";
-import { Solicitud } from '../Interfaces/Solicitud';
+import { Isolicitud } from '../Interfaces/Isolicitud';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -19,6 +18,7 @@ import Info2010 from '../components/DetalleSolicitud/Info2010';
 import Icertificado from '../Interfaces/Icertificado';
 import Ifacultad from '../Interfaces/Ifacultad';
 import { Icurso } from '../Interfaces/Icurso';
+import SolicitudesService from '../Services/sSolicitudes';
 
 type Props = {
     certificados:Icertificado[],
@@ -38,14 +38,14 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
     const [openD, setOpenD] = React.useState<boolean>(false);
 
     //datos de solicitud
-    const [item, setItem] = useState<Solicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', 
+    const [item, setItem] = useState<Isolicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', 
         celular:'', certificado_trabajo:'', codigo:'', dni:'', email:'', idioma:'', nivel:'', numero_voucher:'',
-        facultad:'', fecha_pago:'', timestamp:'', trabajador:false, voucher:'', estado:'', pago:0})
+        facultad:'', fecha_pago:'', timestamp:'', trabajador:false, voucher:'', estado:'', pago:''})
     let {id} = useParams()
 
     useEffect(()=>{
         const getItem = async(id :string) =>{
-            let solicitud = await selectItem(id) as Solicitud
+            let solicitud = await SolicitudesService.getItem(id) as Isolicitud
             setItem(solicitud)
         }
         getItem(id as string)
@@ -75,11 +75,11 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
     }
     //guardar en la bd
     const saveItem = ():void => {
-        updateItem(item.id as string, item)
+        SolicitudesService.updateItem(item)
         setEdit(false)
         setOpenD(false)
     }
-    const validateForm = (item:Solicitud) =>{
+    const validateForm = (item:Isolicitud) =>{
         if((item.estado===undefined || item.estado==='') || (item.dni==='') || (item.nombres==='') ||
             (item.apellidos==='') || (item.celular==='') || (item.email==='') || (item.numero_voucher==='') ||
             (item.fecha_pago==='')){

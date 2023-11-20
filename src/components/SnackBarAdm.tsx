@@ -6,9 +6,10 @@ type Props = {
     content:string,
     open:boolean,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
+    severity?:"error"|"info"|"success"|"warning"
 }
 
-export default function SnackBarAdm({content, open, setOpen}:Props) 
+export default function SnackBarAdm({content, open, setOpen, severity='info'}:Props) 
 {
     const handleClose = (/*event?: React.SyntheticEvent | Event*/) => {
         setOpen(false);
@@ -17,7 +18,7 @@ export default function SnackBarAdm({content, open, setOpen}:Props)
     return (
         <React.Fragment>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                     {content}
                 </Alert>
             </Snackbar>

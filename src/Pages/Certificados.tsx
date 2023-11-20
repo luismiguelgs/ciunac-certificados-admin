@@ -1,12 +1,12 @@
 import React from "react";
 import { firestore } from '../Services/firebase';
 import { collection, onSnapshot,query, where } from 'firebase/firestore';
-import { Solicitud } from "../Interfaces/Solicitud";
+import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
-import { deleteItem } from "../Services/solicitudes";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DialogAdm from "../components/DialogAdm";
 import { Typography } from "@mui/material";
+import SolicitudesService from "../Services/sSolicitudes";
 
 
 const columns: Column[] = [
@@ -29,14 +29,14 @@ export default function Certificados()
   //navigation
   const navigate = useNavigate()
   //data y bd
-  const [data, setData] = React.useState<Solicitud[]>([]);
+  const [data, setData] = React.useState<Isolicitud[]>([]);
   const db = collection(firestore, 'solicitudes');
   const itemQuery =  query(db, where('estado',"==",searchParams.get('estado')))
 
   React.useEffect(()=>{
     onSnapshot(itemQuery, (data)=>{
       setData(data.docs.map((item)=>{
-        return { ...item.data(), id:item.id  } as Solicitud
+        return { ...item.data(), id:item.id  } as Isolicitud
       }));
     });
   },[searchParams]);
@@ -49,7 +49,7 @@ export default function Certificados()
       navigate(`/solicitudes/${id}`)
   }
   const deleteFunc = () => {
-    deleteItem(ID)
+    SolicitudesService.deleteItem(ID)
     setOpenD(false)
   }
 

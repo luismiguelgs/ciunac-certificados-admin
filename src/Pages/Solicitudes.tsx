@@ -1,9 +1,8 @@
 import { useState,useEffect } from "react";
 import { firestore } from '../Services/firebase';
 import { collection, onSnapshot,query, where } from 'firebase/firestore';
-import { Solicitud } from "../Interfaces/Solicitud";
+import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
-import { deleteItem } from "../Services/solicitudes";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 import DialogAdm from "../components/DialogAdm";
@@ -12,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import SolicitudesService from "../Services/sSolicitudes";
 
 const columns: Column[] = [
   { id: 'solicitud', label: 'Solicitud', minWidth: 120 },
@@ -29,7 +29,7 @@ export default function Solicitudes()
     //navigation
     const navigate = useNavigate()
     //data y bd
-    const [data, setData] = useState<Solicitud[]>([]);
+    const [data, setData] = useState<Isolicitud[]>([]);
     const db = collection(firestore, 'solicitudes');
 
     //busqueda
@@ -39,7 +39,7 @@ export default function Solicitudes()
         if(busqueda === ''){
           onSnapshot(db, (data)=>{
             setData(data.docs.map((item)=>{
-              return { ...item.data(), id:item.id  } as Solicitud
+              return { ...item.data(), id:item.id  } as Isolicitud
             }));
           });
         }
@@ -47,7 +47,7 @@ export default function Solicitudes()
           const itemQuery =  query(db, where('apellidos',">=",busqueda))
           onSnapshot(itemQuery, (data)=>{
             setData(data.docs.map((item)=>{
-              return { ...item.data(), id:item.id  } as Solicitud
+              return { ...item.data(), id:item.id  } as Isolicitud
             }));
           });
         }
@@ -61,7 +61,7 @@ export default function Solicitudes()
         navigate(`/solicitudes/${id}`)
     }
     const deleteFunc = () => {
-      deleteItem(ID)
+      SolicitudesService.deleteItem(ID)
       setOpenD(false)
     }
     const handleNew = () =>{

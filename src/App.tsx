@@ -37,7 +37,9 @@ function App()
           <Route 
             path='opciones' 
             element={<Opciones certificados={certificados} cursos={cursos} facultades={facultades}/>} />
-          <Route path='solicitud-nueva' element={<NuevaSolicitud />} />
+          <Route 
+            path='solicitud-nueva' 
+            element={<NuevaSolicitud tipoSolicitud={certificados} cursos={cursos} facultades={facultades}/>} />
           <Route path='mantenimiento' element={<Mantenimineto />} />
 				</Route>
       </Routes>

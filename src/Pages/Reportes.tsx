@@ -1,7 +1,7 @@
 import React from 'react'
 import { firestore } from '../Services/firebase';
 import { collection, onSnapshot,query, where } from 'firebase/firestore';
-import { Solicitud } from "../Interfaces/Solicitud";
+import { Solicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button';
