@@ -18,5 +18,7 @@ export interface Isolicitud {
     trabajador:boolean,
     voucher?:string,
     estado?:string,
-    pago:string
+    pago:string,
+    creado?:string,
+    modificado?:string
 }

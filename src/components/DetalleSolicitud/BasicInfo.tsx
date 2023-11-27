@@ -1,11 +1,15 @@
-import { Solicitud } from "../../Interfaces/Isolicitud"
+import { Isolicitud } from "../../Interfaces/Isolicitud"
 import { Grid, TextField, MenuItem } from '@mui/material'
 import { ESTADO, NIVEL } from "../../Services/constants"
 import Ifacultad from "../../Interfaces/Ifacultad"
 import { Icurso } from "../../Interfaces/Icurso"
+import FaceIcon from '@mui/icons-material/Face';
+import Chip from '@mui/material/Chip';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 
 type Props={
-    item:Solicitud
+    item:Isolicitud
     handleChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void
     edit:boolean,
     facultades:Ifacultad[],
@@ -14,6 +18,27 @@ type Props={
 export default function BasicInfo({item, handleChange, edit, facultades, cursos}:Props){
     return(
         <Grid container spacing={2} >
+            <Grid item xs={12}>
+                {
+                    item.estado === 'NUEVO' ? 
+                    (<Chip icon={<MilitaryTechIcon />} label="Solicitud Nueva" sx={{m:1}} color="error"/>) : 
+                    item.estado === 'ELABORADO' ?
+                    (<Chip icon={<MilitaryTechIcon />} label="Solicitud Elaborada" sx={{m:1}} color="warning"/>) : 
+                    (<Chip icon={<MilitaryTechIcon />} label="Solicitud Terminada" sx={{m:1}} color="success"/>)
+                }
+                {
+                    item.facultad !== 'PAR' ? 
+                    (<Chip icon={<FaceIcon />} label="Alumno UNAC" sx={{m:1}} color="primary"/>) : 
+                    item.trabajador ? 
+                    (<Chip icon={<FaceIcon />} label="Trabajador UNAC" sx={{m:1}} color="primary" />) :
+                    (<Chip icon={<FaceIcon />} label="PARTICULAR" sx={{m:1}} color="primary"/>)
+                }
+                {
+                    item.antiguo ? 
+                    (<Chip icon={<TextSnippetIcon />} label="Matrícula Antigua" sx={{m:1}} color="secondary"/>) : 
+                    (<Chip icon={<TextSnippetIcon />} label="Matrícula en Sistema" sx={{m:1}} color="secondary"/>)
+                }
+            </Grid>
             <Grid item xs={12} sm={6}>
             {item?.estado && <TextField
                         select
@@ -152,7 +177,7 @@ export default function BasicInfo({item, handleChange, edit, facultades, cursos}
                     </TextField>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {item?.facultad && <TextField
+                    <TextField
                         select
                         disabled={!edit}
                         fullWidth
@@ -170,10 +195,9 @@ export default function BasicInfo({item, handleChange, edit, facultades, cursos}
                             ))
                         }
                     </TextField>
-                    }
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    {item?.codigo && <TextField
+                    <TextField
                         required
                         disabled={!edit}
                         fullWidth
@@ -187,7 +211,6 @@ export default function BasicInfo({item, handleChange, edit, facultades, cursos}
                         }}
                         helperText={false && "Campo requerido, mínimo 8 dígitos"}
                     />
-                    }
                 </Grid>
             </Grid>
     )

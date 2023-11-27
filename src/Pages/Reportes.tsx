@@ -1,7 +1,7 @@
 import React from 'react'
 import { firestore } from '../Services/firebase';
 import { collection, onSnapshot,query, where } from 'firebase/firestore';
-import { Solicitud } from "../Interfaces/Isolicitud";
+import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button';
@@ -24,14 +24,14 @@ export default function Reportes()
     //data y bd
     const [fechaInicial, setFechaInicial] = React.useState<string>(new Date().toISOString().split('T')[0])
     const [fechaFinal, setFechaFinal] = React.useState<string>(new Date().toISOString().split('T')[0])
-    const [data, setData] = React.useState<Solicitud[]>([]);
+    const [data, setData] = React.useState<Isolicitud[]>([]);
     const db = collection(firestore, 'solicitudes');
     const itemQuery =  query(db, where('creado',">=",new Date(fechaInicial)),where('creado',"<=",new Date(fechaFinal)))
 
     React.useEffect(()=>{
         onSnapshot(itemQuery, (data)=>{
           setData(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id  } as Solicitud
+            return { ...item.data(), id:item.id  } as Isolicitud
           }));
         });
       },[fechaInicial,fechaFinal]);

@@ -17,7 +17,6 @@ type Props = {
 export default function DialogAdm({title,content, open, setOpen, actionFunc}:Props) 
 {
   
-
   const handleClose = () => {
     setOpen(false);
   };

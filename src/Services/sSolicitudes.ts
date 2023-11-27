@@ -89,6 +89,13 @@ export default class SolicitudesService
       modificado: serverTimestamp()
     }).then(()=>{console.log('updateStatus');}).catch((err)=>console.log(err.message));  
   }
+  public static updateImagen = (id:string) =>{
+    let dataToUpdate = doc(firestore, this.dataCollection, id);
+    updateDoc(dataToUpdate,{
+      voucher: 'borrado',
+      modificado: serverTimestamp()
+    }).then(()=>{console.log('updateStatus');}).catch((err)=>console.log(err.message));  
+  }
 }
 
 

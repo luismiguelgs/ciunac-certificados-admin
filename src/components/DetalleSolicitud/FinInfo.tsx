@@ -1,11 +1,11 @@
 import { Grid, TextField, MenuItem,InputAdornment } from '@mui/material'
-import { Solicitud } from '../../Interfaces/Isolicitud'
+import { Isolicitud } from '../../Interfaces/Isolicitud'
 import Icertificado from '../../Interfaces/Icertificado'
 import Link from '@mui/material/Link';
 import pdfLogo from '../../assets/pdf.png'
 
 type Props={
-    item:Solicitud
+    item:Isolicitud
     handleChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void
     edit:boolean,
     tipoSolicitud:Icertificado[]

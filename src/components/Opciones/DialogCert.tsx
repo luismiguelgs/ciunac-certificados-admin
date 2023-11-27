@@ -11,7 +11,7 @@ import Icertificado from '../../Interfaces/Icertificado';
 type Props = {
     item:Icertificado
     setItem:React.Dispatch<React.SetStateAction<Icertificado>>
-    title:string,
+    opt:string,
     content:string,
     open:boolean,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
@@ -19,7 +19,7 @@ type Props = {
 }
 
 
-export default function DialogCert({item, setItem, title, content, open, setOpen, actionFunc}:Props) 
+export default function DialogCert({item, setItem, opt, content, open, setOpen, actionFunc}:Props) 
 {
     const handleClose = () => {
         setOpen(false);
@@ -34,22 +34,26 @@ export default function DialogCert({item, setItem, title, content, open, setOpen
         <React.Fragment>
             
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{opt === 'NUEVO' ? "Nuevo Item" : 'Editar Item'}</DialogTitle>
             <DialogContent>
             <DialogContentText>
                 {content}
             </DialogContentText>
-            <TextField
-                autoFocus
-                value={item.value}
-                margin="dense"
-                name="value"
-                label="Valor"
-                onChange={(e)=>handleChange(e)}
-                type="text"
-                fullWidth
-                variant="standard"
-            />
+            {
+                opt === 'NUEVO' ? (
+                    <TextField
+                        autoFocus
+                        value={item.value}
+                        margin="dense"
+                        name="value"
+                        label="Valor"
+                        onChange={(e)=>handleChange(e)}
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                    />
+                ) : null
+            }
             <TextField
                 margin="dense"
                 name="label"

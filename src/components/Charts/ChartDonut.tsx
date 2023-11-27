@@ -1,41 +1,45 @@
+import Chart from 'react-apexcharts';
 import React from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
+import { Isolicitud } from '../../Interfaces/Isolicitud';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+type Props = {
+  data:Isolicitud[]
+}
 
-export const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
+const options: ApexCharts.ApexOptions = {
+  chart: {
+    type: 'pie',
+  },
+  labels: ['Inglés', 'Portugués', 'Italiano', 'Francés', 'Otros'],
+  responsive: [
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200,
+        },
+        legend: {
+          position: 'bottom',
+        },
       },
-    ],
-  };
-
-export default function ChartDonut() 
+    },
+  ],
+}
+  
+export default function ChartDonut({data}:Props)
 {
+    const ingles = data.filter(objeto => objeto.idioma === 'INGLES').length;
+    const portugues = data.filter(objeto => objeto.idioma === 'PORTUGUES').length;
+    const italiano = data.filter(objeto => objeto.idioma === 'ITALIANO').length;
+    const frances = data.filter(objeto => objeto.idioma === 'FRANCES').length;
+    const otros = data.length - ingles - portugues - italiano - frances
+
+    // Datos para el gráfico
+    const series = [ingles, portugues, italiano, frances, otros]
+
     return (
-        <React.Fragment>
-            <Doughnut data={data} />
-        </React.Fragment>
+      <React.Fragment>
+          <Chart options={options} series={series} type="pie" width="92%"/>
+      </React.Fragment>
     )
 }

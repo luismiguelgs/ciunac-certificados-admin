@@ -72,10 +72,10 @@ export default function OpcCertificados({certificados}:Props)
               open={openD} 
               setOpen={setOpenD} 
               actionFunc={deleteFunc}/>
-             <DialogCert
+            <DialogCert
                 item={item} 
                 setItem={setItem} 
-                title={ ID=='' ? 'Nuevo Item' : 'Editar Item' }
+                opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
                 content='' 
                 open={openDF} 
                 setOpen={setOpenDF}

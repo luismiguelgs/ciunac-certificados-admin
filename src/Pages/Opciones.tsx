@@ -56,6 +56,7 @@ export default function Opciones({certificados, cursos, facultades}:Props)
     return (
       <React.Fragment>
         <Box sx={{ width: '100%' }}>
+        <Typography variant="h4" gutterBottom>Opciones</Typography>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Certificados" />

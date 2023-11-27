@@ -10,15 +10,15 @@ import Facultad from '../../Interfaces/Ifacultad';
 
 type Props = {
     item:Facultad
-    setItem:React.Dispatch<React.SetStateAction<Facultad>>
-    title:string,
+    setItem:React.Dispatch<React.SetStateAction<Facultad>>,
+    opt:string,
     content:string,
     open:boolean,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
     actionFunc(arg?:any):void
 }
 
-export default function DialogForm({item, setItem, title, content, open, setOpen, actionFunc}:Props) 
+export default function DialogForm({item, setItem, opt, content, open, setOpen, actionFunc}:Props) 
 {
     
     const handleClose = () => {
@@ -33,22 +33,26 @@ export default function DialogForm({item, setItem, title, content, open, setOpen
     return (
         <React.Fragment>
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{opt==='NUEVO' ? 'Nuevo Item' : 'Editar Item'}</DialogTitle>
             <DialogContent>
             <DialogContentText>
                 {content}
             </DialogContentText>
-            <TextField
-                autoFocus
-                value={item.value}
-                margin="dense"
-                name="value"
-                label="Valor"
-                onChange={(e)=>handleChange(e)}
-                type="text"
-                fullWidth
-                variant="standard"
-            />
+            {
+                opt === 'NUEVO' ? (
+                    <TextField
+                        autoFocus
+                        value={item.value}
+                        margin="dense"
+                        name="value"
+                        label="Valor"
+                        onChange={(e)=>handleChange(e)}
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                    />
+                ) : null
+            }
             <TextField
                 margin="dense"
                 name="label"

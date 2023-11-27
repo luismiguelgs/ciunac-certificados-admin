@@ -75,7 +75,7 @@ export default function OpcFacultades({data}:Props)
             <DialogForm 
                 item={item} 
                 setItem={setItem} 
-                title={ ID=='' ? 'Nuevo Item' : 'Editar Item' }
+                opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
                 content='' 
                 open={openDF} 
                 setOpen={setOpenDF}
