@@ -8,12 +8,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt',
-      includeAssets: ['favicon.ico', "apple-touc-icon.png", "masked-icon.svg"],
+      registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      includeAssets: ['favicon.ico', "apple-touch-icon.png", "masked-icon.svg"],
       manifest:{
         name:"React-vite-app",
         short_name:"react-vite-app",
         description:"I am a simple vite app",
+        theme_color:'#171717',
         icons:[
           {
             src: '/android-chrome-192x192.png',
@@ -40,7 +42,7 @@ export default defineConfig({
             purpose:'any maskable',
           }
         ],
-        theme_color:'#171717',
+        
         background_color:'#f0e7db',
         display:"standalone",
         scope:'/',
