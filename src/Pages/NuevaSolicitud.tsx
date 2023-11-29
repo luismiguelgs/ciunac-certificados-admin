@@ -102,7 +102,7 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
                 <Paper elevation={2} sx={{p:2}}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Typography variant="h6" gutterBottom>Nueva Solicitud</Typography>
+                            <Typography variant="h4" gutterBottom>Nueva Solicitud</Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField 

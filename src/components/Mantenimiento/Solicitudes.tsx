@@ -1,17 +1,17 @@
 import { useState,useEffect } from "react";
-import { firestore } from '../Services/firebase';
+import { firestore } from '../../Services/firebase';
 import { collection, onSnapshot,query, where } from 'firebase/firestore';
-import { Isolicitud } from "../Interfaces/Isolicitud";
-import DataTable from "../components/DataTable";
+import { Isolicitud } from "../../Interfaces/Isolicitud";
+import DataTable from "../DataTable";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
-import DialogAdm from "../components/DialogAdm";
+import DialogAdm from "../DialogAdm";
 import { Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import SolicitudesService from "../Services/sSolicitudes";
+import SolicitudesService from "../../Services/sSolicitudes";
 
 const columns: Column[] = [
   { id: 'solicitud', label: 'Solicitud', minWidth: 120 },

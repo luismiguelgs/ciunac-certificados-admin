@@ -9,7 +9,7 @@ import { collection,getDocs, } from 'firebase/firestore';
 import { firestore } from '../Services/firebase';
 import { changeDate } from '../Services/util';
 
-export default function Test()
+export default function Dashboard()
 {
     const [data, setData] = React.useState<Isolicitud[]>([]);
     const db = collection(firestore, 'solicitudes');
@@ -42,7 +42,7 @@ export default function Test()
             </CardChart>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CardChart title='Solicitudes ...'>
+            <CardChart title='Solicitudes por estado'>
               {data && <BarChart data={data} horizontal={false}/>}
             </CardChart>
           </Grid>

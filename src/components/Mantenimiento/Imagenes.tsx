@@ -125,7 +125,7 @@ export default function Imagenes({columns, elementos, opcion}:Props)
                 color='error' 
                 variant="outlined" 
                 startIcon={<DeleteIcon />}>
-                  Eliminar Imágenes
+                  Eliminar
               </Button>
             </Grid>
           </Grid>

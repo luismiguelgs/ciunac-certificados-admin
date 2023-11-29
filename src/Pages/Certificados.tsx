@@ -1,16 +1,18 @@
 import React from "react";
 import { firestore } from '../Services/firebase';
-import { collection, onSnapshot,query, where } from 'firebase/firestore';
+import { collection, onSnapshot,orderBy,query, where } from 'firebase/firestore';
 import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DialogAdm from "../components/DialogAdm";
 import { Typography } from "@mui/material";
 import SolicitudesService from "../Services/sSolicitudes";
+import { changeDate } from "../Services/util";
 
 
 const columns: Column[] = [
   { id: 'solicitud', label: 'Solicitud', minWidth: 80, align: 'left' },
+  { id: 'creado', label: 'Fecha', minWidth: 40},
   { id: 'apellidos', label: 'Apellidos', minWidth: 150 },
   { id: 'nombres', label: 'Nombres', minWidth: 120 },
   { id: 'idioma', label: 'Idioma', minWidth: 25, align: 'left' },
@@ -31,12 +33,12 @@ export default function Certificados()
   //data y bd
   const [data, setData] = React.useState<Isolicitud[]>([]);
   const db = collection(firestore, 'solicitudes');
-  const itemQuery =  query(db, where('estado',"==",searchParams.get('estado')))
+  const itemQuery =  query(db, where('estado',"==",searchParams.get('estado')),orderBy('creado','asc'))
 
   React.useEffect(()=>{
     onSnapshot(itemQuery, (data)=>{
       setData(data.docs.map((item)=>{
-        return { ...item.data(), id:item.id  } as Isolicitud
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)  } as Isolicitud
       }));
     });
   },[searchParams]);
@@ -55,7 +57,7 @@ export default function Certificados()
 
   return (
     <React.Fragment>
-      <Typography>{searchParams.get('estado')}</Typography>
+      <Typography variant="h4" gutterBottom>{searchParams.get('estado')}</Typography>
       {data && <DataTable 
             rows={data} 
             columns={columns} 

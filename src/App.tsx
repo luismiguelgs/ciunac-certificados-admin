@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Layout from './components/Layout'
-import Test from './Pages/Test'
-import Solicitudes from './Pages/Solicitudes'
+import Dashboard from './Pages/Dashboard'
+import Solicitudes from './components/Mantenimiento/Solicitudes'
 import DetalleSolicitudes from './Pages/DetalleSolicitudes'
 import Opciones from './Pages/Opciones'
 import Preloader from './components/Preloader'
@@ -27,7 +27,7 @@ function App()
       <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}> 
-          <Route index element={<Test/>} />
+          <Route index element={<Dashboard/>} />
           <Route path='certificados' element={<Certificados />} />
           <Route path='reportes' element={<Reportes />} />
           <Route path='solicitudes' element={<Solicitudes/>} />

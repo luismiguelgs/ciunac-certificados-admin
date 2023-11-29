@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import ImgTrabajador from '../components/Mantenimiento/ImgTrabajador';
 import SolEntregadas from '../components/Mantenimiento/SolEntregadas';
 import ImgVouchers from '../components/Mantenimiento/ImgVouchers';
+import Solicitudes from '../components/Mantenimiento/Solicitudes';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -64,7 +65,7 @@ export default function Mantenimineto()
             <SolEntregadas />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={3}>
-            
+            <Solicitudes />
           </CustomTabPanel>
         </Box>
       </React.Fragment>

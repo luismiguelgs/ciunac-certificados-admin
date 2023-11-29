@@ -1,11 +1,31 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa";
+import { splitVendorChunkPlugin } from 'vite'
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build:{
+    chunkSizeWarningLimit:1000,
+    rollupOptions:{
+      output:{
+        manualChunks(id:string){
+          if (id.includes('firebase')) {
+            return '@firebase';
+          }
+          if (id.includes('exceljs')) {
+            return '@exceljs';
+          }
+          if (id.includes('apexcharts') || id.includes('react-apexcharts')) {
+            return '@apexcharts';
+          }
+        }
+      }
+    },
+  },
   plugins: [
+    //splitVendorChunkPlugin(),
     react(),
     VitePWA({
       registerType: 'autoUpdate',

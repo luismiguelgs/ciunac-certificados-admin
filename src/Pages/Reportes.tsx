@@ -4,6 +4,7 @@ import { collection, onSnapshot,query, where } from 'firebase/firestore';
 import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
 import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import * as ExcelJS from 'exceljs';
@@ -76,6 +77,7 @@ export default function Reportes()
     }
     return (
       <React.Fragment>
+          <Typography variant="h4" gutterBottom>Reporte</Typography>
           <Grid container spacing={2} sx={{mt:2}}>
             <Grid item xs={12} sm={6}>
               <TextField

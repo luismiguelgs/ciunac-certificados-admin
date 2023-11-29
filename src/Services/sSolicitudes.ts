@@ -1,7 +1,8 @@
 import React from 'react';
 import { Isolicitud } from '../Interfaces/Isolicitud';
 import { firestore } from './firebase';
-import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot } from 'firebase/firestore'
+import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot, Query } from 'firebase/firestore'
+import { changeDate } from './util';
 
 export default class SolicitudesService
 {
@@ -14,6 +15,16 @@ export default class SolicitudesService
       onSnapshot(this.db, (data)=>{
         setData(data.docs.map((item)=>{
           return { ...item.data(), id:item.id } as Isolicitud
+        }));
+      });
+    },[]);
+  }
+  public static fetchItemQuery(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,query:Query)
+  {
+    React.useEffect(()=>{
+      onSnapshot(query, (data)=>{
+        setData(data.docs.map((item)=>{
+          return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true) } as Isolicitud
         }));
       });
     },[]);

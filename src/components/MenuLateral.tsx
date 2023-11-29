@@ -6,7 +6,6 @@ import { DRAWER_WIDTH } from '../Services/constants';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import SourceIcon from '@mui/icons-material/Source';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import BuildIcon from '@mui/icons-material/Build';
@@ -64,19 +63,13 @@ export default function MenuLateral({mobileOpen, handleDrawerToggle}:Props)
               <ListItemText primary='Nueva Solicitud'/>
             </ListItemButton>
         </ListItem>
-        <ListItem key={2} disablePadding component={Link} to="/solicitudes" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><SourceIcon /></ListItemIcon>
-              <ListItemText primary='Solicitudes'/>
-            </ListItemButton>
-        </ListItem>
-        <ListItem key={3} disablePadding component={Link} to="/opciones" color="inherit">
+        <ListItem key={2} disablePadding component={Link} to="/opciones" color="inherit">
           <ListItemButton>
             <ListItemIcon><SettingsIcon /></ListItemIcon>
             <ListItemText primary='Opciones'/>
           </ListItemButton>
         </ListItem>
-        <ListItem key={4} disablePadding component={Link} to="/mantenimiento" color="inherit">
+        <ListItem key={3} disablePadding component={Link} to="/mantenimiento" color="inherit">
           <ListItemButton>
             <ListItemIcon><BuildIcon /></ListItemIcon>
             <ListItemText primary='Mantenimiento'/>
