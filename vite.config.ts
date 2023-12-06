@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from "vite-plugin-pwa";
-import { splitVendorChunkPlugin } from 'vite'
 
 
 // https://vitejs.dev/config/
@@ -32,8 +31,8 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.ico', "apple-touch-icon.png", "masked-icon.svg"],
       manifest:{
-        name:"React-vite-app",
-        short_name:"react-vite-app",
+        name:"Ciunac Certificados",
+        short_name:"ciunac-certificados",
         description:"I am a simple vite app",
         theme_color:'#171717',
         icons:[

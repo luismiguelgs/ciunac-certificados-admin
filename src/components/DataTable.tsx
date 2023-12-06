@@ -36,7 +36,7 @@ export default function DataTable({rows, columns, handleDelete, handleEdit, acti
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ minHeight: 550 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -91,6 +91,7 @@ export default function DataTable({rows, columns, handleDelete, handleEdit, acti
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
+        labelRowsPerPage='Filas por Página'
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}

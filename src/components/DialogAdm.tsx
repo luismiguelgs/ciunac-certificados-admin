@@ -11,10 +11,11 @@ type Props = {
   content:string,
   open:boolean,
   setOpen:React.Dispatch<React.SetStateAction<boolean>>
-  actionFunc():void
+  actionFunc?():void,
+  alert?:boolean
 }
 
-export default function DialogAdm({title,content, open, setOpen, actionFunc}:Props) 
+export default function DialogAdm({title,content, open, setOpen, actionFunc, alert=false}:Props) 
 {
   
   const handleClose = () => {
@@ -38,8 +39,13 @@ export default function DialogAdm({title,content, open, setOpen, actionFunc}:Pro
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={actionFunc} autoFocus>Aceptar</Button>
+          {
+              alert ? (<Button onClick={handleClose} autoFocus>Aceptar</Button>)
+              :(<>
+                  <Button onClick={handleClose}>Cancelar</Button>
+                  <Button onClick={actionFunc} autoFocus>Aceptar</Button>
+                </>)
+          }
           </DialogActions>
         </Dialog>
     </React.Fragment>

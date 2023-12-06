@@ -46,6 +46,7 @@ export default class SolicitudesService
       facultad:obj.facultad,
       fecha_pago:obj.fecha_pago,
       pago:+obj.pago,
+      manual:true,
       creado: serverTimestamp()
     }
     try{

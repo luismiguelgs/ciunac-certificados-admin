@@ -16,7 +16,8 @@ import { IsolicitudVal } from '../Interfaces/IsolicitudVal';
 import { valNuevaSolicitud } from '../Services/validation';
 import { useMask } from '@react-input/mask';
 import SolicitudesService from '../Services/sSolicitudes';
-import SnackBarAdm from '../components/SnackBarAdm';
+//import SnackBarAdm from '../components/SnackBarAdm';
+import DialogAdm from '../components/DialogAdm';
 
 type Props = {
     tipoSolicitud:Icertificado[],
@@ -69,7 +70,7 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
     //snackbar
     const [open, setOpen] = React.useState<boolean>(false)
     const [texto, setTexto] = React.useState<string>('')
-    const [severity, setSeverity] = React.useState<"error"|"info"|"success"|"warning">('info')
+    //const [severity, setSeverity] = React.useState<"error"|"info"|"success"|"warning">('info')
 
     const handleChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = event.target
@@ -84,14 +85,31 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
             //guardar en la bd
             SolicitudesService.newItem(item)
             setTexto('Solicitud guardada')
-            setSeverity('success')
+            //setSeverity('success')
             setOpen(true)
             //regresar al menu anterior 
-            navigate(-1)
+            //navigate(-1)
+            //resetear el formulario
+            setItem({
+                solicitud:'',
+                apellidos:'',
+                nombres:'',
+                dni:'',
+                celular:'',
+                email:'',
+                idioma:'',
+                numero_voucher:'',
+                nivel:'',
+                trabajador:false, 
+                fecha_pago:'',
+                pago:'0',
+                facultad:'PAR',
+                codigo: ''
+            })
         }else{
             //mostrar un error
             setTexto('Error al guardar solicitud')
-            setSeverity('error')
+            //setSeverity('error')
             setOpen(true)
         }
     }
@@ -321,7 +339,8 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
                     </Grid>
                 </Grid>
             </Box>
-            <SnackBarAdm content={texto} open={open} setOpen={setOpen} severity={severity} />
+            {/*<SnackBarAdm content={texto} open={open} setOpen={setOpen} severity={severity} />*/}
+            <DialogAdm open={open} setOpen={setOpen} content={texto} title='Nueva Solicitud' alert={true}/>
         </React.Fragment>
     )
 }

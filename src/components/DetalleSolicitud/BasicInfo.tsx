@@ -7,6 +7,8 @@ import FaceIcon from '@mui/icons-material/Face';
 import Chip from '@mui/material/Chip';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
+import PowerIcon from '@mui/icons-material/Power';
 
 type Props={
     item:Isolicitud
@@ -37,6 +39,11 @@ export default function BasicInfo({item, handleChange, edit, facultades, cursos}
                     item.antiguo ? 
                     (<Chip icon={<TextSnippetIcon />} label="Matrícula Antigua" sx={{m:1}} color="secondary"/>) : 
                     (<Chip icon={<TextSnippetIcon />} label="Matrícula en Sistema" sx={{m:1}} color="secondary"/>)
+                }
+                {
+                    item.manual === true ? 
+                    (<Chip icon={<PowerIcon />} label="Solicitud Manual" sx={{m:1}} />) : 
+                    (<Chip icon={<OnlinePredictionIcon />} label="Solicitud Online" sx={{m:1}} />)
                 }
             </Grid>
             <Grid item xs={12} sm={6}>

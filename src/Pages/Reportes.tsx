@@ -71,7 +71,9 @@ export default function Reportes()
     const formatearDatos =() =>{
       const excelData:any[] = [['Apellidos','Nombres','DNI','Idioma','Nivel','Pago','Recibo','Estado']]
       data.forEach((row)=>{
-        excelData.push([row.apellidos,row.nombres, row.dni, row.idioma, row.nivel, +row.pago, row.numero_voucher, row.estado])
+        excelData.push([
+          row.apellidos.toUpperCase(),row.nombres.toUpperCase(), row.dni, row.idioma, row.nivel, +row.pago, row.numero_voucher, row.estado
+        ])
       })
       return excelData
     }
@@ -87,7 +89,15 @@ export default function Reportes()
                 disabled={false}
                 error={false}
                 value={fechaInicial}
-                onChange={(e)=>setFechaInicial(e.target.value)}
+                onChange={(e)=>{
+                  const inputDate = e.target.value;
+                  const isValidDate = !isNaN(new Date(inputDate).getTime());
+                  if (isValidDate) {
+                    setFechaInicial(inputDate);
+                  } else {
+                    console.error('Fecha inválida');
+                  }
+                }}
                 name="fecha"
                 label="Fecha Inicial"
                 helperText={false && "Ingrese la fecha válida"}
@@ -101,7 +111,15 @@ export default function Reportes()
                   disabled={false}
                   error={false}
                   value={fechaFinal}
-                  onChange={(e)=>setFechaFinal(e.target.value)}
+                  onChange={(e)=>{
+                    const inputDate = e.target.value;
+                    const isValidDate = !isNaN(new Date(inputDate).getTime());
+                    if (isValidDate) {
+                      setFechaFinal(inputDate);
+                    } else {
+                      console.error('Fecha inválida');
+                    }
+                  }}
                   name="fecha"
                   label="Fecha Final"
                   helperText={false && "Ingrese la fecha válida"}

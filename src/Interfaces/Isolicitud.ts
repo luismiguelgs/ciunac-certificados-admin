@@ -19,6 +19,7 @@ export interface Isolicitud {
     voucher?:string,
     estado?:string,
     pago:string,
+    manual:boolean,
     creado?:string,
     modificado?:string
 }
