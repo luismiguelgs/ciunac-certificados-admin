@@ -118,3 +118,21 @@ export function valNuevaSolicitud(data:Isolicitud,setVal:React.Dispatch<React.Se
     
     return solicitud && nombres && apellidos && dni && celular && idioma && nivel
 }
+export function valEditarSolicitud(item:Isolicitud)
+{
+    if(item.manual === true){
+        if((item.estado===undefined || item.estado==='') || (item.dni==='') || (item.nombres==='') ||
+        (item.apellidos==='') || (item.celular==='')  || (item.numero_voucher==='') ||
+        (item.fecha_pago==='')){
+            return false
+        }
+            return true
+    }else{
+        if((item.estado===undefined || item.estado==='') || (item.dni==='') || (item.nombres==='') ||
+        (item.apellidos==='') || (item.celular==='') || (item.email==='') || (item.numero_voucher==='') ||
+        (item.fecha_pago==='')){
+            return false
+        }
+            return true
+    }
+}

@@ -9,8 +9,10 @@ import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import * as ExcelJS from 'exceljs';
 import { Grid } from '@mui/material';
+import { changeDate } from "../Services/util";
 
 const columns: Column[] = [
+    { id:'creado', label:'Fecha',minWidth:40},
     { id: 'apellidos', label: 'Apellidos', minWidth: 150 },
     { id: 'nombres', label: 'Nombres', minWidth: 120 },
     { id: 'idioma', label: 'Idioma', minWidth: 25, align: 'right' },
@@ -24,18 +26,34 @@ export default function Reportes()
 {
     //data y bd
     const [fechaInicial, setFechaInicial] = React.useState<string>(new Date().toISOString().split('T')[0])
+    const [displayFechaFinal, setDisplayFechaFinal] = React.useState<string>(new Date().toISOString().split('T')[0])
     const [fechaFinal, setFechaFinal] = React.useState<string>(new Date().toISOString().split('T')[0])
     const [data, setData] = React.useState<Isolicitud[]>([]);
     const db = collection(firestore, 'solicitudes');
-    const itemQuery =  query(db, where('creado',">=",new Date(fechaInicial)),where('creado',"<=",new Date(fechaFinal)))
-
+    
     React.useEffect(()=>{
+        console.log(fechaFinal);
+        const itemQuery =  query(db, where('creado',">=",new Date(fechaInicial)),where('creado',"<=",new Date(fechaFinal)))
         onSnapshot(itemQuery, (data)=>{
           setData(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id  } as Isolicitud
+            return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true) } as Isolicitud
           }));
         });
       },[fechaInicial,fechaFinal]);
+
+    //aumenta un dia la fecha final
+    const handleFechaFinalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const inputDate = e.target.value;
+      const isValidDate = !isNaN(new Date(inputDate).getTime());
+      if (isValidDate) {
+        // Obtener la fecha siguiente agregando un día a la fecha ingresada
+        setDisplayFechaFinal(inputDate)
+        const nextDate = new Date(new Date(inputDate).getTime() + 24 * 60 * 60 * 1000);
+        setFechaFinal(nextDate.toISOString().split('T')[0]);
+      } else {
+        console.error('Fecha inválida');
+      }
+    };
     
     const handleExport = async() => {
       const workbook = new ExcelJS.Workbook();
@@ -110,16 +128,8 @@ export default function Reportes()
                   required
                   disabled={false}
                   error={false}
-                  value={fechaFinal}
-                  onChange={(e)=>{
-                    const inputDate = e.target.value;
-                    const isValidDate = !isNaN(new Date(inputDate).getTime());
-                    if (isValidDate) {
-                      setFechaFinal(inputDate);
-                    } else {
-                      console.error('Fecha inválida');
-                    }
-                  }}
+                  value={displayFechaFinal}
+                  onChange={handleFechaFinalChange}
                   name="fecha"
                   label="Fecha Final"
                   helperText={false && "Ingrese la fecha válida"}

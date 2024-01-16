@@ -1,5 +1,5 @@
 import React from 'react'
-import DialogAdm from '../../components/DialogAdm';
+import DialogAdm from '../Dialogs/DialogAdm';
 import DataTable from '../../components/DataTable';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';

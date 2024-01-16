@@ -3,15 +3,18 @@ import { firestore } from '../Services/firebase';
 import { collection, onSnapshot,orderBy,query, where } from 'firebase/firestore';
 import { Isolicitud } from "../Interfaces/Isolicitud";
 import DataTable from "../components/DataTable";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import DialogAdm from "../components/DialogAdm";
+import { useSearchParams } from "react-router-dom";
+import DialogAdm from "../components/Dialogs/DialogAdm";
 import { Typography } from "@mui/material";
 import SolicitudesService from "../Services/sSolicitudes";
 import { changeDate } from "../Services/util";
-
+import DialogFull from "../components/Dialogs/DialogFull";
+import { Icurso } from "../Interfaces/Icurso";
+import Icertificado from "../Interfaces/Icertificado";
+import Ifacultad from "../Interfaces/Ifacultad";
 
 const columns: Column[] = [
-  { id: 'solicitud', label: 'Solicitud', minWidth: 80, align: 'left' },
+  { id: 'solicitud', label: 'Solicitud', minWidth: 70, align: 'left' },
   { id: 'creado', label: 'Fecha', minWidth: 40},
   { id: 'apellidos', label: 'Apellidos', minWidth: 150 },
   { id: 'nombres', label: 'Nombres', minWidth: 120 },
@@ -20,16 +23,23 @@ const columns: Column[] = [
   
 ];
 
-export default function Certificados() 
+type Props = {
+  cursos:Icurso[],
+  certificados:Icertificado[],
+  facultades:Ifacultad[]
+}
+
+export default function Certificados({cursos, certificados, facultades}:Props) 
 {
   //router
   const [searchParams] = useSearchParams()
   
   //dialog
   const [ID, setID] = React.useState<string| undefined>('');
-  const [openD, setOpenD] = React.useState<boolean>(false);
+  const [openDialogD, setOpenDialogD] = React.useState<boolean>(false);
+  const [openDialogF, setOpenDialogF] = React.useState<boolean>(false);
   //navigation
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   //data y bd
   const [data, setData] = React.useState<Isolicitud[]>([]);
   const db = collection(firestore, 'solicitudes');
@@ -45,14 +55,16 @@ export default function Certificados()
 
   const handleDelete = (id:string | undefined) =>{
     setID(id)
-    setOpenD(true)
+    setOpenDialogD(true)
   }
   const handleEdit = (id:string | undefined) =>{
-      navigate(`/solicitudes/${id}`)
+      setOpenDialogF(true)
+      setID(id)
+      //navigate(`/solicitudes/${id}`)
   }
   const deleteFunc = () => {
     SolicitudesService.deleteItem(ID)
-    setOpenD(false)
+    setOpenDialogD(false)
   }
 
   return (
@@ -63,14 +75,25 @@ export default function Certificados()
             columns={columns} 
             handleDelete={handleDelete} 
             handleEdit={handleEdit} 
+            size='small'
+            origen={true}
             action={true}/>
       }
+      <DialogFull 
+          open={openDialogF} 
+          setOpen={setOpenDialogF}
+          title="Detalle de Solicitud"
+          id={ID}
+          certificados={certificados}
+          cursos={cursos}
+          facultades={facultades}
+      />
       <DialogAdm 
-            title='Borrar Registro' 
-            content="Confirma borrar el registro?"
-            open={openD} 
-            setOpen={setOpenD} 
-            actionFunc={deleteFunc}/>
+          title='Borrar Registro' 
+          content="Confirma borrar el registro?"
+          open={openDialogD} 
+          setOpen={setOpenDialogD} 
+          actionFunc={deleteFunc}/>
     </React.Fragment>
   )
 }

@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DialogAdm from '../../components/DialogAdm';
+import DialogAdm from '../Dialogs/DialogAdm';
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';

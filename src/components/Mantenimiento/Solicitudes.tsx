@@ -5,7 +5,7 @@ import { Isolicitud } from "../../Interfaces/Isolicitud";
 import DataTable from "../DataTable";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
-import DialogAdm from "../DialogAdm";
+import DialogAdm from "../Dialogs/DialogAdm";
 import { Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField'

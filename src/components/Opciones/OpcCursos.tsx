@@ -3,7 +3,7 @@ import { Icurso } from '../../Interfaces/Icurso'
 import DataTable from '../DataTable'
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DialogAdm from '../DialogAdm';
+import DialogAdm from '../Dialogs/DialogAdm';
 import DialogCurso from './DialogCurso';
 import CursosService from '../../Services/sCursos';
 

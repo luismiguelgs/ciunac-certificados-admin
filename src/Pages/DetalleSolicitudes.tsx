@@ -12,13 +12,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SaveIcon from '@mui/icons-material/Save';
 import FinInfo from '../components/DetalleSolicitud/FinInfo';
-import DialogAdm from '../components/DialogAdm';
+import DialogAdm from '../components/Dialogs/DialogAdm';
 import SnackBarAdm from '../components/SnackBarAdm';
 import Info2010 from '../components/DetalleSolicitud/Info2010';
 import Icertificado from '../Interfaces/Icertificado';
 import Ifacultad from '../Interfaces/Ifacultad';
 import { Icurso } from '../Interfaces/Icurso';
 import SolicitudesService from '../Services/sSolicitudes';
+import { valEditarSolicitud } from '../Services/validation';
 
 type Props = {
     certificados:Icertificado[],
@@ -80,12 +81,7 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
         setOpenD(false)
     }
     const validateForm = (item:Isolicitud) =>{
-        if((item.estado===undefined || item.estado==='') || (item.dni==='') || (item.nombres==='') ||
-            (item.apellidos==='') || (item.celular==='') || (item.email==='') || (item.numero_voucher==='') ||
-            (item.fecha_pago==='')){
-            return false
-        }
-        return true
+        return valEditarSolicitud(item)       
     }
     const handleChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = event.target
