@@ -5,22 +5,16 @@ import ChartLine from '../components/Charts/ChartLine';
 import CardChart from '../components/Charts/CardChart';
 import BarChart from '../components/Charts/BarChart';
 import { Isolicitud } from '../Interfaces/Isolicitud';
-import { collection,getDocs, } from 'firebase/firestore';
-import { firestore } from '../Services/firebase';
-import { changeDate } from '../Services/util';
+
+import SolicitudesService from '../Services/sSolicitudes';
 
 export default function Dashboard()
 {
     const [data, setData] = React.useState<Isolicitud[]>([]);
-    const db = collection(firestore, 'solicitudes');
     
     React.useEffect(()=>{
       const getData = async()=>{
-        const d = await getDocs(db);
-        
-        setData(d.docs.map((item)=>{
-          return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,false) } as Isolicitud
-        }));
+        SolicitudesService.fetchItems(setData)
       }
       getData()
     },[])

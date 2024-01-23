@@ -1,4 +1,6 @@
 import { Timestamp } from "firebase/firestore";
+import * as ExcelJS from 'exceljs';
+import { Isolicitud } from "../Interfaces/Isolicitud";
 
 export const changeDate = (date:Timestamp, hora=true):string|undefined => {
     if(date === null) return
@@ -28,4 +30,44 @@ export const changeDate = (date:Timestamp, hora=true):string|undefined => {
     }
 } 
   
-  
+export async function exportToExcel(data:Isolicitud[])
+{
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('DataSheet');
+
+  const dataF = formatearDatos(data)
+
+  // Agregar datos a la hoja de cálculo
+  dataF.forEach(row => {
+    worksheet.addRow(row as any);
+  });
+
+  // Generar un blob a partir del libro de Excel
+  const buffer = await workbook.xlsx.writeBuffer();
+  // Crear un objeto Blob
+  const blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+  // Crear un enlace de descarga
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'datos.xlsx';
+
+  // Agregar el enlace al documento y hacer clic para iniciar la descarga
+  document.body.appendChild(a);
+  a.click();
+
+  // Limpiar el enlace después de la descarga
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
+const formatearDatos =(data:Isolicitud[]) =>{
+  const excelData:any[] = [['Apellidos','Nombres','DNI','Idioma','Nivel','Pago','Recibo','Estado']]
+  data.forEach((row)=>{
+    excelData.push([
+      row.apellidos.toUpperCase(),row.nombres.toUpperCase(), row.dni, row.idioma, row.nivel, +row.pago, row.numero_voucher, row.estado
+    ])
+  })
+  return excelData
+}

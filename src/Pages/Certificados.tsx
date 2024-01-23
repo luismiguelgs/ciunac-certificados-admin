@@ -1,13 +1,10 @@
 import React from "react";
-import { firestore } from '../Services/firebase';
-import { collection, onSnapshot,orderBy,query, where } from 'firebase/firestore';
 import { Isolicitud } from "../Interfaces/Isolicitud";
-import DataTable from "../components/DataTable";
+import DataTable from "../components/MUI/DataTable";
 import { useSearchParams } from "react-router-dom";
 import DialogAdm from "../components/Dialogs/DialogAdm";
 import { Typography } from "@mui/material";
 import SolicitudesService from "../Services/sSolicitudes";
-import { changeDate } from "../Services/util";
 import DialogFull from "../components/Dialogs/DialogFull";
 import { Icurso } from "../Interfaces/Icurso";
 import Icertificado from "../Interfaces/Icertificado";
@@ -42,16 +39,10 @@ export default function Certificados({cursos, certificados, facultades}:Props)
   //const navigate = useNavigate()
   //data y bd
   const [data, setData] = React.useState<Isolicitud[]>([]);
-  const db = collection(firestore, 'solicitudes');
-  const itemQuery =  query(db, where('estado',"==",searchParams.get('estado')),orderBy('creado','asc'))
 
   React.useEffect(()=>{
-    onSnapshot(itemQuery, (data)=>{
-      setData(data.docs.map((item)=>{
-        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)  } as Isolicitud
-      }));
-    });
-  },[searchParams]);
+    SolicitudesService.fetchItemQuery(setData, searchParams.get('estado'))
+  },[searchParams.get('estado')]);
 
   const handleDelete = (id:string | undefined) =>{
     setID(id)

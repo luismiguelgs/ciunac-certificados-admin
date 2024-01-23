@@ -1,15 +1,10 @@
 import React from 'react'
-import { firestore } from '../Services/firebase';
-import { collection, onSnapshot,query, where } from 'firebase/firestore';
 import { Isolicitud } from "../Interfaces/Isolicitud";
-import DataTable from "../components/DataTable";
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import * as ExcelJS from 'exceljs';
-import { Grid } from '@mui/material';
-import { changeDate } from "../Services/util";
+import DataTable from "../components/MUI/DataTable";
+import { Grid, Button, Typography, TextField } from '@mui/material';
+import { exportToExcel } from "../Services/util";
+import { CloudDownloadIcon } from '../Services/icons';
+import SolicitudesService from '../Services/sSolicitudes';
 
 const columns: Column[] = [
     { id:'creado', label:'Fecha',minWidth:40},
@@ -29,16 +24,9 @@ export default function Reportes()
     const [displayFechaFinal, setDisplayFechaFinal] = React.useState<string>(new Date().toISOString().split('T')[0])
     const [fechaFinal, setFechaFinal] = React.useState<string>(new Date().toISOString().split('T')[0])
     const [data, setData] = React.useState<Isolicitud[]>([]);
-    const db = collection(firestore, 'solicitudes');
     
     React.useEffect(()=>{
-        console.log(fechaFinal);
-        const itemQuery =  query(db, where('creado',">=",new Date(fechaInicial)),where('creado',"<=",new Date(fechaFinal)))
-        onSnapshot(itemQuery, (data)=>{
-          setData(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true) } as Isolicitud
-          }));
-        });
+        SolicitudesService.fetchItemQueryDate(setData,fechaInicial,fechaFinal)
       },[fechaInicial,fechaFinal]);
 
     //aumenta un dia la fecha final
@@ -56,45 +44,9 @@ export default function Reportes()
     };
     
     const handleExport = async() => {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('DataSheet');
-
-      const dataF = formatearDatos()
-
-      // Agregar datos a la hoja de cálculo
-      dataF.forEach(row => {
-        worksheet.addRow(row as any);
-      });
-      // Generar un blob a partir del libro de Excel
-      const buffer = await workbook.xlsx.writeBuffer();
-      // Crear un objeto Blob
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-      // Crear un enlace de descarga
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'datos.xlsx';
-
-      // Agregar el enlace al documento y hacer clic para iniciar la descarga
-      document.body.appendChild(a);
-      a.click();
-
-      // Limpiar el enlace después de la descarga
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      await exportToExcel(data)           
     }
 
-    const formatearDatos =() =>{
-      const excelData:any[] = [['Apellidos','Nombres','DNI','Idioma','Nivel','Pago','Recibo','Estado']]
-      data.forEach((row)=>{
-        excelData.push([
-          row.apellidos.toUpperCase(),row.nombres.toUpperCase(), row.dni, row.idioma, row.nivel, +row.pago, row.numero_voucher, row.estado
-        ])
-      })
-      return excelData
-    }
     return (
       <React.Fragment>
           <Typography variant="h4" gutterBottom>Reporte</Typography>

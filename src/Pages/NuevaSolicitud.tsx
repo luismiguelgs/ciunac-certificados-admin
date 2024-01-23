@@ -1,20 +1,16 @@
 import React from 'react'
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid'
-import { Button } from '@mui/material'
+import { Box, Grid, Button } from '@mui/material';
 import { Isolicitud } from '../Interfaces/Isolicitud';
 import Icertificado from '../Interfaces/Icertificado';
 import { Icurso } from '../Interfaces/Icurso';
 import Ifacultad from '../Interfaces/Ifacultad';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom'
-import SaveIcon from '@mui/icons-material/Save';
 import { IsolicitudVal } from '../Interfaces/IsolicitudVal';
 import { valNuevaSolicitud } from '../Services/validation';
-
 import SolicitudesService from '../Services/sSolicitudes';
 import DialogAdm from '../components/Dialogs/DialogAdm';
 import NuevaSolicitudForm from '../components/NuevaSolicitud/NuevaSolicitudForm';
+import { ArrowBackIcon, SaveIcon } from '../Services/icons';
 
 type Props = {
     tipoSolicitud:Icertificado[],
@@ -22,27 +18,21 @@ type Props = {
     facultades: Ifacultad[]
 }
 const NEW_OBJ = {solicitud:'',apellidos:'',nombres:'',dni:'',celular:'',email: '',idioma:'',numero_voucher: '',nivel:'',trabajador:false,fecha_pago: '',
-    pago:'0',facultad:'PAR',codigo: ''}
+    pago:'0',facultad:'PAR',codigo: '',creado:'', modificado:''
+}
+
+const VAL_OBJ = {solicitud:false, nombres:false, apellidos:false, dni:false, celular:false, idioma:false, nivel:false, pago:false, numero_voucher:false,
+    fecha_pago:false, codigo:false
+}
 
 export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props) 
 {
     //router history
     const navigate = useNavigate()
-
+    //Objeto solicitud
     const [item,setItem] = React.useState<Isolicitud>(NEW_OBJ)
-    const [val, setVal] = React.useState<IsolicitudVal>({
-        solicitud:false,
-        nombres:false, 
-        apellidos:false,
-        dni:false,
-        celular:false,
-        idioma:false,
-        nivel:false,
-        pago:false,
-        numero_voucher:false,
-        fecha_pago:false,
-        codigo:false
-    })
+    //Objeto de validación
+    const [val, setVal] = React.useState<IsolicitudVal>(VAL_OBJ)
     //snackbar
     const [open, setOpen] = React.useState<boolean>(false)
     const [texto, setTexto] = React.useState<string>('')
@@ -84,7 +74,7 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
                             variant="contained" 
                             color="secondary" 
                             sx={{m:2}}
-                            startIcon={<ArrowBackIcon/>}>
+                            startIcon={<ArrowBackIcon />}>
                             Atras
                         </Button>
                         <Button 

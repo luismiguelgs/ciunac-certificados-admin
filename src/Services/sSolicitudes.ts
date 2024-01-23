@@ -1,7 +1,7 @@
 import React from 'react';
 import { Isolicitud } from '../Interfaces/Isolicitud';
 import { firestore } from './firebase';
-import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot, Query } from 'firebase/firestore'
+import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot, Timestamp, query, where, orderBy, Query } from 'firebase/firestore'
 import { changeDate } from './util';
 
 export default class SolicitudesService
@@ -11,23 +11,45 @@ export default class SolicitudesService
 
   public static fetchItems(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>)
   {
-    React.useEffect(()=>{
-      onSnapshot(this.db, (data)=>{
-        setData(data.docs.map((item)=>{
-          return { ...item.data(), id:item.id } as Isolicitud
-        }));
-      });
-    },[]);
+    onSnapshot(this.db, (data)=>{
+      setData(data.docs.map((item)=>{
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)} as Isolicitud
+      }));
+    });
   }
-  public static fetchItemQuery(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,query:Query)
+  public static fetchItemQueryDate(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,fechaInicial:string, fechaFinal:string,order=false)
   {
-    React.useEffect(()=>{
-      onSnapshot(query, (data)=>{
-        setData(data.docs.map((item)=>{
-          return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true) } as Isolicitud
-        }));
-      });
-    },[]);
+    let itemQuery: Query
+    if(order){
+     itemQuery = query(this.db, 
+        where('estado',"==","ENTREGADO"), 
+        where('creado',">=",new Date(fechaInicial)),
+        where('creado',"<=",new Date(fechaFinal)), 
+        orderBy('creado','asc'))
+    }else{
+      itemQuery =  query(this.db, where('creado',">=",new Date(fechaInicial)),where('creado',"<=",new Date(fechaFinal)))
+    }
+    
+    onSnapshot(itemQuery, (data)=>{
+      setData(data.docs.map((item)=>{
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true) } as Isolicitud
+      }));
+    });
+  }
+  public static fetchItemQuery(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,searchParams:string | null,order=true)
+  {
+    let itemQuery: Query
+    if(order){
+      itemQuery =  query(this.db, where('estado',"==",searchParams),orderBy('creado','asc'))
+    }else{
+      itemQuery =  query(this.db, where('apellidos',">=",searchParams))
+    }
+    
+    onSnapshot(itemQuery, (data)=>{
+      setData(data.docs.map((item)=>{
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)  } as Isolicitud
+      }));
+    });
   }
   public static async newItem(obj:Isolicitud)
   {
@@ -47,7 +69,8 @@ export default class SolicitudesService
       fecha_pago:obj.fecha_pago,
       pago:+obj.pago,
       manual:true,
-      creado: serverTimestamp()
+      creado: obj.creado === ''? serverTimestamp() : this.dateToTimestamp(obj.creado),
+      modificado: serverTimestamp()
     }
     try{
       await addDoc(this.db, data)
@@ -107,6 +130,16 @@ export default class SolicitudesService
       voucher: 'borrado',
       modificado: serverTimestamp()
     }).then(()=>{console.log('updateStatus');}).catch((err)=>console.log(err.message));  
+  }
+  private static dateToTimestamp(date:string)
+  {
+    const partesFecha = date.split("-");
+    const anio = parseInt(partesFecha[0], 10);
+    const mes = parseInt(partesFecha[1], 10) - 1; // Meses en JavaScript son de 0 a 11
+    const dia = parseInt(partesFecha[2], 10);
+
+    const fechaObj = new Date(anio,mes,dia)
+    return Timestamp.fromDate(fechaObj)
   }
 }
 

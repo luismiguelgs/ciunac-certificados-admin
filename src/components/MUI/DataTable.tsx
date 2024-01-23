@@ -1,17 +1,6 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import PublicIcon from '@mui/icons-material/Public';
-import KeyboardIcon from '@mui/icons-material/Keyboard';
+import { Paper, Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow, IconButton } from '@mui/material';
+import { DeleteIcon, EditIcon, KeyboardIcon, PublicIcon } from '../../Services/icons';
 
 type Props = {
     rows:any[],

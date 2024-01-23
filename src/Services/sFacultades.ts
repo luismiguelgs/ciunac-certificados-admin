@@ -11,13 +11,11 @@ export default class FacultadesService
 
   public static fetchItems(setData:React.Dispatch<React.SetStateAction<Ifacultad[]>>) 
   {
-    React.useEffect(()=>{
-        onSnapshot(this.db, (data)=>{
-          setData(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id, creado:changeDate(item.data().creado) } as Ifacultad
-          }));
-        });
-    },[]);
+    onSnapshot(this.db, (data)=>{
+      setData(data.docs.map((item)=>{
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado) } as Ifacultad
+      }));
+    });
   }
   public static newItem = async(obj:Ifacultad) =>{
     const data = {

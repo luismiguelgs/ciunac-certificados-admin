@@ -1,74 +1,73 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Facultad from '../../Interfaces/Ifacultad';
+import React from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+
 
 type Props = {
-    item:Facultad
-    setItem:React.Dispatch<React.SetStateAction<Facultad>>,
+    certificado?:boolean,
+    item:any,
+    setItem:React.Dispatch<React.SetStateAction<any>>,
     opt:string,
-    content:string,
+    contentText?:string,
     open:boolean,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
     actionFunc(arg?:any):void
 }
 
-export default function DialogForm({item, setItem, opt, content, open, setOpen, actionFunc}:Props) 
+export default function DialogForm({certificado=false, item, setItem, opt, contentText='', open, setOpen, actionFunc}:Props) 
 {
-    
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = event.target
-        setItem((prevFormData)=>({...prevFormData, [name]:value}))
+        setItem((prevFormData:any)=>({...prevFormData, [name]:value}))
     }
 
     return (
         <React.Fragment>
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{opt==='NUEVO' ? 'Nuevo Item' : 'Editar Item'}</DialogTitle>
-            <DialogContent>
-            <DialogContentText>
-                {content}
-            </DialogContentText>
-            {
-                opt === 'NUEVO' ? (
+            <Dialog open={open} onClose={()=>setOpen(false)}>
+                <DialogTitle>{opt==='NUEVO' ? 'Nuevo Item' : 'Editar Item'}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{contentText}</DialogContentText>
+                    {
+                        opt === 'NUEVO' ? (
+                            <TextField
+                                autoFocus
+                                value={item.value}
+                                margin="dense"
+                                name="value"
+                                label="Valor"
+                                onChange={(e)=>handleChange(e)}
+                                type="text"
+                                fullWidth
+                                variant="standard"
+                            />
+                        ) : null
+                    }
                     <TextField
-                        autoFocus
-                        value={item.value}
                         margin="dense"
-                        name="value"
-                        label="Valor"
+                        name="label"
+                        value={item.label}
+                        label="Etiqueta"
                         onChange={(e)=>handleChange(e)}
                         type="text"
                         fullWidth
                         variant="standard"
                     />
-                ) : null
-            }
-            <TextField
-                margin="dense"
-                name="label"
-                value={item.label}
-                label="Etiqueta"
-                onChange={(e)=>handleChange(e)}
-                type="text"
-                fullWidth
-                variant="standard"
-            />
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={actionFunc}>Aceptar</Button>
-            </DialogActions>
-        </Dialog>
+                    {certificado && <TextField
+                        margin="dense"
+                        name="precio"
+                        value={item?.precio}
+                        label="Precio"
+                        onChange={(e)=>handleChange(e)}
+                        type="number"
+                        fullWidth
+                        variant="standard"
+                    />
+                    }   
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>setOpen(false)}>Cancelar</Button>
+                    <Button onClick={actionFunc}>Aceptar</Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
-    );
+    )
 }

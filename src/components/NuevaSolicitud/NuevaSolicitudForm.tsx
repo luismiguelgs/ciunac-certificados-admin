@@ -27,12 +27,19 @@ export default function NuevaSolicitudForm({tipoSolicitud,cursos,facultades, val
     const voucherRef = useMask({ mask: '_______________', replacement: { _: /\d/ } });
     const pagoRef = useMask({ mask: '_____', replacement: { _: /^[0-9.]*$/ } });
 
+    //Flag para guardar fecha de creacion
+    const [fechaCreacion, setFechaCreacion] = React.useState(false)
+
     const handleChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = event.target
         setItem((prevFormData)=>({...prevFormData, [name]:value}))
     }
-    const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setItem({...item, [event.target.name]: event.target.checked});
+    const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>, fecha=false) => {
+        if(fecha){
+            setFechaCreacion(!fechaCreacion)
+        }else{
+            setItem({...item, [event.target.name]: event.target.checked});
+        }
     };
 
     return (
@@ -221,8 +228,12 @@ export default function NuevaSolicitudForm({tipoSolicitud,cursos,facultades, val
                             <TextField
                                 type='date'
                                 fullWidth
+                                label='Fecha de Pago'
                                 error={val.fecha_pago}
                                 value={item?.fecha_pago}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                                 onChange={e=>handleChange(e)}
                                 name="fecha_pago"
                                 helperText={val.fecha_pago && "Ingrese la fecha de pago válida"}
@@ -233,6 +244,28 @@ export default function NuevaSolicitudForm({tipoSolicitud,cursos,facultades, val
                             control={<Switch onChange={e=>handleChangeSwitch(e)} checked={item.trabajador} name="trabajador"/>}
                             label="Trabajador UNAC" 
                         />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                type='date'
+                                fullWidth
+                                label='Fecha de Ingreso'
+                                disabled={!fechaCreacion}
+                                //error={val.fecha_pago}
+                                value={item?.creado}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                onChange={e=>handleChange(e)}
+                                name="creado"
+                                helperText={val.fecha_pago && "Ingrese la fecha válida"}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControlLabel
+                                control={<Switch onChange={e=>handleChangeSwitch(e,true)} checked={fechaCreacion} name="fecha_creacion"/>}
+                                label="Ingresar Fecha de solicitud" 
+                            />
                         </Grid>
                     </Grid>
                 </Paper>

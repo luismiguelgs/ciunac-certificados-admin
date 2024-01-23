@@ -2,19 +2,17 @@ import React from 'react'
 import { Isolicitud } from '../../Interfaces/Isolicitud';
 import SolicitudesService from '../../Services/sSolicitudes';
 import { valEditarSolicitud } from '../../Services/validation';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Grid, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Button, Grid } from '@mui/material';
 import BasicInfo from './BasicInfo';
 import Icertificado from '../../Interfaces/Icertificado';
 import Ifacultad from '../../Interfaces/Ifacultad';
 import { Icurso } from '../../Interfaces/Icurso';
 import FinInfo from './FinInfo';
 import Info2010 from './Info2010';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import SaveIcon from '@mui/icons-material/Save';
-import SnackBarAdm from '../SnackBarAdm';
+import SnackBarAdm from '../MUI/SnackBarAdm';
 import DialogAdm from '../Dialogs/DialogAdm';
+import MyAccordion, { PanelData } from '../MUI/MyAccordion';
+import { ArrowBackIcon, EditNoteIcon, SaveIcon } from '../../Services/icons';
 
 type Props = {
     id:string | undefined,
@@ -33,9 +31,9 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
     const [openD, setOpenD] = React.useState<boolean>(false);
 
     //datos de solicitud
-    const [item, setItem] = React.useState<Isolicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', 
-        celular:'', certificado_trabajo:'', codigo:'', dni:'', email:'', idioma:'', nivel:'', numero_voucher:'',
-        facultad:'', fecha_pago:'', timestamp:'', trabajador:false, voucher:'', estado:'', pago:''})
+    const [item, setItem] = React.useState<Isolicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', celular:'', certificado_trabajo:'',
+     codigo:'', dni:'', email:'', idioma:'', nivel:'', numero_voucher:'', facultad:'', fecha_pago:'', trabajador:false, voucher:'', estado:'', pago:'',
+     creado:'', modificado:''})
     
     React.useEffect(()=>{
         const getItem = async(id :string) =>{
@@ -45,24 +43,13 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
         getItem(id as string)
     },[])
 
-    //control del acordion
-    const [expanded, setExpanded] = React.useState<string | false>('panel1');
-
-    const handleExpand = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-        console.log(event.type);
-        setExpanded(isExpanded ? panel : false);
-    };
-
     //manejar edicion
     const [edit, setEdit] = React.useState<boolean>(false)
-    const handleClickEdit = () =>{
-        setEdit(true)
-    }
+
     //manejar guardar
     const handleClickSave = () =>{
-        if(validateForm(item)){
+        if(valEditarSolicitud(item)){
              setOpenD(true)
-            
         }else{
             setOpenS(true)
         }
@@ -73,13 +60,33 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
         setEdit(false)
         setOpenD(false)
     }
-    const validateForm = (item:Isolicitud) =>{
-        return valEditarSolicitud(item)       
-    }
     const handleChange = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = event.target
         setItem((prevFormData)=>({...prevFormData, [name]:value}))
     }
+
+    const panels:PanelData[] = [
+        {
+            title: 'Información de Alumno',
+            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>,
+            disabled: false
+        },
+        {
+            title: 'Información de solicitud',
+            content: <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>,
+            disabled: false
+        },
+        {
+            title: 'Información de trabajador',
+            content: <img src={item?.certificado_trabajo} width={280}/>,
+            disabled: !item.trabajador
+        },
+        {
+            title: 'Información de cursos anteriores al 2009',
+            content: <Info2010 id={item.id as string}/>,
+            disabled: !item.antiguo
+        }
+    ]
 
     return (
         <React.Fragment>
@@ -87,52 +94,7 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
                 item ? (
                 <Grid container spacing={2} sx={{p:2}}>
                     <Grid item xs={12}>
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleExpand('panel1')}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header" sx={{backgroundColor:'lightskyblue'}}>
-                                <Typography>Información de Alumno</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion expanded={expanded === 'panel2'} onChange={handleExpand('panel2')}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}
-                                sx={{backgroundColor:'lightskyblue'}}
-                                aria-controls="panel2a-content"
-                                id="panel2a-header"
-                                >
-                                <Typography>Información de solicitud</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion disabled={!item.trabajador} expanded={expanded === 'panel3'} onChange={handleExpand('panel3')}>
-                            <AccordionSummary
-                                sx={{backgroundColor:'lightskyblue'}}
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel3a-content"
-                                id="panel3a-header"
-                                >
-                                <Typography>Información de trabajador</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                            {item.trabajador && (<img src={item?.certificado_trabajo} width={280}/>)}
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion disabled={!item.antiguo} expanded={expanded === 'panel4'} onChange={handleExpand('panel4')}>
-                            <AccordionSummary
-                            sx={{backgroundColor:'lightskyblue'}}
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel3a-content"
-                            id="panel3a-header"
-                            >
-                                <Typography>Información de cursos anteriores al 2009</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                            {item.id && <Info2010 id={item.id as string}/> }
-                            </AccordionDetails>
-                        </Accordion>
+                        <MyAccordion panels={panels} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button 
@@ -147,7 +109,7 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
                             variant="contained" 
                             color="primary" 
                             sx={{ml:2}} 
-                            onClick={handleClickEdit} 
+                            onClick={()=>setEdit(true)} 
                             endIcon={<EditNoteIcon />}
                             disabled={edit}>
                             Editar
@@ -172,7 +134,6 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
                     open={openD}
                     setOpen={setOpenD}
                     actionFunc={saveItem}/>
-                    
         </React.Fragment>
     )
 }

@@ -1,19 +1,11 @@
 import React from 'react'
 import { Isolicitud } from '../../Interfaces/Isolicitud';
-import { collection,query, where, getDocs, orderBy } from 'firebase/firestore';
-import { firestore } from '../../Services/firebase';
-import { changeDate } from '../../Services/util';
-import DataTable from "../../components/DataTable";
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import DataTable from "../MUI/DataTable";
+import { TextField, Button, Grid, Backdrop, CircularProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import DialogAdm from '../Dialogs/DialogAdm';
-import { getStorage, ref, deleteObject } from "firebase/storage";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import SolicitudesService from '../../Services/sSolicitudes';
-
+import StorageService from '../../Services/StorageService';
 
 type Props = {
   columns: Column[]
@@ -28,24 +20,9 @@ export default function Imagenes({columns, elementos, opcion}:Props)
     const [openD, setOpenD] = React.useState<boolean>(false)
     const [openB, setOpenB] = React.useState<boolean>(false)
     const [data, setData] = React.useState<Isolicitud[]>([]);
-    const db = collection(firestore, 'solicitudes');
-    const storage = getStorage();
-    const iQuery =  query(db, 
-        where('estado',"==","ENTREGADO"), 
-        where('creado',">=",new Date(fechaInicial)),
-        where('creado',"<=",new Date(fechaFinal)), 
-        orderBy('creado','asc'))
     
-  
     React.useEffect(()=>{
-      const getData = async()=>{
-        const d = await getDocs(iQuery);
-        
-        setData(d.docs.map((item)=>{
-          return { ...item.data(), id:item.id, creado:changeDate(item.data().creado) } as Isolicitud
-      }));
-      }
-      getData()
+      SolicitudesService.fetchItemQueryDate(setData,fechaInicial,fechaFinal,true)
     },[fechaFinal,fechaInicial])
 
     const handleDelete = () =>{
@@ -55,34 +32,21 @@ export default function Imagenes({columns, elementos, opcion}:Props)
       switch (opcion) {
         case 0:
           data.forEach(item=>{
-            deleteImagen(item.voucher as string, item.id as string)
+            StorageService.deleteImagen(item.voucher as string, item.id as string)
           })
         break;
         case 1:
           data.forEach(item=>{
-            deleteImagen(item.certificado_trabajo as string, item.id as string)
+            StorageService.deleteImagen(item.certificado_trabajo as string, item.id as string)
           })
         break;
         case 2:
           data.forEach(item=>{
-            borrarItem(item.id as string)
+            SolicitudesService.deleteItem(item.id as string)
           })
         break;
       }
       setOpenB(false)
-    }
-    const deleteImagen = (url:string, id:string) =>{
-      // Create a reference to the file to delete
-      const desertRef = ref(storage, url);
-      deleteObject(desertRef).then(() => {
-        SolicitudesService.updateImagen(id)
-        console.log(url, 'eliminada');
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    const borrarItem = (id:string) =>{
-      SolicitudesService.deleteItem(id)
     }
     
     return (

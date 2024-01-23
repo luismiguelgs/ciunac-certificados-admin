@@ -1,11 +1,11 @@
 import React from 'react'
 import { Icurso } from '../../Interfaces/Icurso'
-import DataTable from '../DataTable'
+import DataTable from '../MUI/DataTable'
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import DialogAdm from '../Dialogs/DialogAdm';
-import DialogCurso from './DialogCurso';
 import CursosService from '../../Services/sCursos';
+import DialogForm from './DialogForm';
 
 type Props={
     cursos:Icurso[]
@@ -73,14 +73,15 @@ export default function OpcCursos({cursos}:Props)
               open={openD} 
               setOpen={setOpenD} 
               actionFunc={deleteFunc}/>
-        <DialogCurso
-                item={item} 
-                setItem={setItem} 
-                opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
-                content='' 
-                open={openDF} 
-                setOpen={setOpenDF}
-                actionFunc={handleSave}/>
+        <DialogForm
+            item={item}
+            setItem={setItem}
+            opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
+            contentText='' 
+            open={openDF}
+            setOpen={setOpenDF}
+            actionFunc={handleSave}
+        />
     </React.Fragment>
   )
 }

@@ -1,11 +1,11 @@
 import React from 'react'
 import DialogAdm from '../Dialogs/DialogAdm';
-import DataTable from '../../components/DataTable';
+import DataTable from '../MUI/DataTable';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import { deleteItem, newItem, updateItem } from '../../Services/sCertificados';
+import CertificadosService from '../../Services/sCertificados';
 import Icertificado from '../../Interfaces/Icertificado';
-import DialogCert from '../../components/Opciones/DialogCert';
+import DialogForm from './DialogForm';
 
 type Props = {
     certificados:Icertificado[]
@@ -44,42 +44,44 @@ export default function OpcCertificados({certificados}:Props)
     }
     const handleSave = () =>{
         if(ID===''){
-            newItem(item)
+            CertificadosService.newItem(item)
             setOpenDF(false)
         }else{
-            updateItem(ID as string, item)
+            CertificadosService.updateItem(ID as string, item)
             setOpenDF(false)
         }
     }
     const deleteFunc = () => {
-        deleteItem(ID)
+        CertificadosService.deleteItem(ID)
         setOpenD(false)
     }
   return (
     <>
         <Button variant="contained" endIcon={<AddIcon /> } sx={{mb:1}} onClick={handleNew}>
-                Nuevo Certificado
-            </Button>
-            <DataTable 
-                rows={certificados} 
-                columns={columns} 
-                handleDelete={handleDelete} 
-                handleEdit={handleEdit} 
-                action={true}/>
-            <DialogAdm
-              title='Borrar Registro' 
-              content="Confirma borrar el registro?"
-              open={openD} 
-              setOpen={setOpenD} 
-              actionFunc={deleteFunc}/>
-            <DialogCert
-                item={item} 
-                setItem={setItem} 
-                opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
-                content='' 
-                open={openDF} 
-                setOpen={setOpenDF}
-                actionFunc={handleSave}/>
+            Nuevo Certificado
+        </Button>
+        <DataTable 
+            rows={certificados} 
+            columns={columns} 
+            handleDelete={handleDelete} 
+            handleEdit={handleEdit} 
+            action={true}/>
+        <DialogAdm
+            title='Borrar Registro' 
+            content="Confirma borrar el registro?"
+            open={openD} 
+            setOpen={setOpenD} 
+            actionFunc={deleteFunc}/>
+        <DialogForm 
+            certificado = {true}
+            item={item}
+            setItem={setItem}
+            opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
+            contentText=''
+            open={openDF}
+            setOpen={setOpenDF}
+            actionFunc={handleSave}
+        />
     </>
   )
 }

@@ -1,14 +1,21 @@
-import {List, ListItem, ListItemButton, ListItemIcon, Divider, ListItemText, Toolbar, Box, Drawer} from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import TaskIcon from '@mui/icons-material/Task';
+import {Divider, Toolbar, Box, Drawer} from '@mui/material';
 import { DRAWER_WIDTH } from '../Services/constants';
-import { Link } from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
-import SettingsIcon from '@mui/icons-material/Settings';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import SummarizeIcon from '@mui/icons-material/Summarize';
-import BuildIcon from '@mui/icons-material/Build';
+import { BuildIcon, HomeIcon, InboxIcon, InsertDriveFileIcon, NoteAddIcon, SettingsIcon, SummarizeIcon, TaskIcon } from '../Services/icons';
+import MyList, { itemList } from './MUI/MyList';
+
+const listItems1:itemList[] = [
+  {label:'Inicio',route:'/',icon:<HomeIcon />},
+  {label:'Solicitudes Nuevas',route:'/certificados?estado=NUEVO',icon:<InboxIcon />},
+  {label:'Solicit. Elaboradas',route:'/certificados?estado=ELABORADO',icon:<InsertDriveFileIcon />},
+  {label:'Solicit. Entregadas',route:'/certificados?estado=ENTREGADO',icon:<TaskIcon />},
+]
+
+const listItems2:itemList[] = [
+  {label:'Reportes',route:'/reportes',icon:<SummarizeIcon />},
+  {label:'Nueva Solicitud',route:'/solicitud-nueva',icon:<NoteAddIcon />},
+  {label:'Opciones',route:'/opciones',icon:<SettingsIcon />},
+  {label:'Mantenimiento',route:'/mantenimiento',icon:<BuildIcon />},
+]
 
 type Props = {
   mobileOpen: boolean,
@@ -22,60 +29,9 @@ export default function MenuLateral({mobileOpen, handleDrawerToggle}:Props)
     <div>
       <Toolbar />
       <Divider />
-      <List>
-          <ListItem key={0} disablePadding component={Link} to="/" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><HomeIcon /></ListItemIcon>
-              <ListItemText primary='Inicio'/>
-            </ListItemButton>  
-          </ListItem>
-          <ListItem key={1} disablePadding component={Link} to="/certificados?estado=NUEVO" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary='Solicitudes Nuevas'/>
-            </ListItemButton>
-          </ListItem>
-          <ListItem key={2} disablePadding component={Link} to="/certificados?estado=ELABORADO" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><InsertDriveFileIcon /></ListItemIcon>
-              <ListItemText primary='Solicit. Elaboradas'/>
-            </ListItemButton>
-          </ListItem>
-          <ListItem key={3} disablePadding component={Link} to="/certificados?estado=ENTREGADO" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><TaskIcon /></ListItemIcon>
-              <ListItemText primary='Solicit. Entregadas'/>
-            </ListItemButton>
-          </ListItem>
-          
-      </List>
+      <MyList items={listItems1} />
       <Divider />
-      <List>
-      <ListItem key={0} disablePadding component={Link} to="/reportes" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><SummarizeIcon /></ListItemIcon>
-              <ListItemText primary='Reportes'/>
-            </ListItemButton>
-          </ListItem>
-        <ListItem key={1} disablePadding component={Link} to="/solicitud-nueva" color="inherit">
-            <ListItemButton>
-              <ListItemIcon><NoteAddIcon /></ListItemIcon>
-              <ListItemText primary='Nueva Solicitud'/>
-            </ListItemButton>
-        </ListItem>
-        <ListItem key={2} disablePadding component={Link} to="/opciones" color="inherit">
-          <ListItemButton>
-            <ListItemIcon><SettingsIcon /></ListItemIcon>
-            <ListItemText primary='Opciones'/>
-          </ListItemButton>
-        </ListItem>
-        <ListItem key={3} disablePadding component={Link} to="/mantenimiento" color="inherit">
-          <ListItemButton>
-            <ListItemIcon><BuildIcon /></ListItemIcon>
-            <ListItemText primary='Mantenimiento'/>
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <MyList items={listItems2} />
     </div>
   );
 

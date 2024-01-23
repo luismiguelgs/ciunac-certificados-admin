@@ -2,24 +2,18 @@ import { Grid, Button } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
 import { Isolicitud } from '../Interfaces/Isolicitud';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import BasicInfo from '../components/DetalleSolicitud/BasicInfo';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import SaveIcon from '@mui/icons-material/Save';
 import FinInfo from '../components/DetalleSolicitud/FinInfo';
 import DialogAdm from '../components/Dialogs/DialogAdm';
-import SnackBarAdm from '../components/SnackBarAdm';
+import SnackBarAdm from '../components/MUI/SnackBarAdm';
 import Info2010 from '../components/DetalleSolicitud/Info2010';
 import Icertificado from '../Interfaces/Icertificado';
 import Ifacultad from '../Interfaces/Ifacultad';
 import { Icurso } from '../Interfaces/Icurso';
 import SolicitudesService from '../Services/sSolicitudes';
 import { valEditarSolicitud } from '../Services/validation';
+import MyAccordion, { PanelData } from '../components/MUI/MyAccordion';
+import { ArrowBackIcon, EditNoteIcon, SaveIcon } from '../Services/icons';
 
 type Props = {
     certificados:Icertificado[],
@@ -29,7 +23,6 @@ type Props = {
 
 export default function DetalleSolicitudes({certificados, facultades, cursos}:Props)
 {
-    
     //history
     const navigate = useNavigate()
     //manejo de snackbar
@@ -39,9 +32,9 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
     const [openD, setOpenD] = React.useState<boolean>(false);
 
     //datos de solicitud
-    const [item, setItem] = useState<Isolicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', 
-        celular:'', certificado_trabajo:'', codigo:'', dni:'', email:'', idioma:'', nivel:'', numero_voucher:'',
-        facultad:'', fecha_pago:'', timestamp:'', trabajador:false, voucher:'', estado:'', pago:''})
+    const [item, setItem] = useState<Isolicitud>({id:'', solicitud:'', antiguo:false, apellidos:'', nombres:'', celular:'', certificado_trabajo:'', codigo:'', 
+        dni:'', email:'', idioma:'', nivel:'', numero_voucher:'',facultad:'', fecha_pago:'', timestamp:'', trabajador:false, voucher:'', estado:'', pago:''})
+    
     let {id} = useParams()
 
     useEffect(()=>{
@@ -52,14 +45,6 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
         getItem(id as string)
     },[])
 
-    //control del acordion
-    const [expanded, setExpanded] = React.useState<string | false>('panel1');
-
-    const handleExpand = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-        console.log(event.type);
-        setExpanded(isExpanded ? panel : false);
-    };
-    
     //manejar edicion
     const [edit, setEdit] = React.useState<boolean>(false)
     const handleClickEdit = () =>{
@@ -69,7 +54,6 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
     const handleClickSave = () =>{
         if(validateForm(item)){
              setOpenD(true)
-            
         }else{
             setOpenS(true)
         }
@@ -88,58 +72,36 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
         setItem((prevFormData)=>({...prevFormData, [name]:value}))
     }
 
+    const panels:PanelData[] = [
+        {
+            title: 'Información de Alumno',
+            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>,
+            disabled: false
+        },
+        {
+            title: 'Información de solicitud',
+            content: <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>,
+            disabled: false
+        },
+        {
+            title: 'Información de trabajador',
+            content: <img src={item?.certificado_trabajo} width={280}/>,
+            disabled: !item.trabajador
+        },
+        {
+            title: 'Información de cursos anteriores al 2009',
+            content: <Info2010 id={item.id as string}/>,
+            disabled: !item.antiguo
+        }
+    ]
+
     return (
         item && <><Grid container spacing={2} >
             <Grid item xs={12}>
-                <Accordion expanded={expanded === 'panel1'} onChange={handleExpand('panel1')}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-                        <Typography>Información de Alumno</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion expanded={expanded === 'panel2'} onChange={handleExpand('panel2')}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel2a-content"
-                    id="panel2a-header"
-                    >
-                    <Typography>Información de solicitud</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion disabled={!item.trabajador} expanded={expanded === 'panel3'} onChange={handleExpand('panel3')}>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
-                    >
-                    <Typography>Información de trabajador</Typography>
-                    </AccordionSummary>
-                    
-                    <AccordionDetails>
-                    {item.trabajador && (<img src={item?.certificado_trabajo} width={280}/>)}
-                    </AccordionDetails>
-                    
-                </Accordion>
-                <Accordion disabled={!item.antiguo} expanded={expanded === 'panel4'} onChange={handleExpand('panel4')}>
-                    <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel3a-content"
-                    id="panel3a-header"
-                    >
-                    <Typography>Información de cursos anteriores al 2009</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                       {item.id && <Info2010 id={item.id as string}/> }
-                    </AccordionDetails>
-                </Accordion>
+                <MyAccordion panels={panels} />
             </Grid>
             <Grid item xs={12}>
-                <Button 
-                    //component={Link} 
+                <Button
                     onClick={()=>navigate(-1)} 
                     variant="contained" 
                     color="secondary" 

@@ -11,13 +11,11 @@ export default class CursosService
 
   public static fetchItems(setData:React.Dispatch<React.SetStateAction<Icurso[]>>) 
   {
-    React.useEffect(()=>{
-        onSnapshot(this.db, (data)=>{
-          setData(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id, creado:changeDate(item.data().creado) } as Icurso
-          }));
-        });
-    },[]);
+    onSnapshot(this.db, (data)=>{
+      setData(data.docs.map((item)=>{
+        return { ...item.data(), id:item.id, creado:changeDate(item.data().creado) } as Icurso
+      }));
+    });
   }
   public static newItem = async(obj:Icurso) =>{
     const data = {

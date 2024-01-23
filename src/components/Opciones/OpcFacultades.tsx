@@ -1,11 +1,11 @@
 import React from 'react'
 import DialogAdm from '../Dialogs/DialogAdm';
-import DataTable from '../DataTable';
+import DataTable from '../MUI/DataTable';
 import AddIcon from '@mui/icons-material/Add';
-import DialogForm from './DialogForm';
 import Button from '@mui/material/Button';
 import FacultadesService from '../../Services/sFacultades';
 import Ifacultad from '../../Interfaces/Ifacultad';
+import DialogForm from './DialogForm';
 
 const columns: Column[] = [
     { id: 'value', label: 'Valor', minWidth: 80 },
@@ -73,11 +73,11 @@ export default function OpcFacultades({data}:Props)
               setOpen={setOpenD} 
               actionFunc={deleteFunc}/>
             <DialogForm 
-                item={item} 
-                setItem={setItem} 
-                opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
-                content='' 
-                open={openDF} 
+                item={item}
+                setItem={setItem}
+                opt={ID=='' ? 'NUEVO' : 'EDITAR'}
+                contentText=''
+                open={openDF}
                 setOpen={setOpenDF}
                 actionFunc={handleSave}
             />

@@ -2,8 +2,14 @@ import Chart from 'react-apexcharts';
 import React from 'react'
 import { Isolicitud } from '../../Interfaces/Isolicitud';
 
+type Options = {
+  label:string,
+  filter:string,
+}
+
 type Props = {
-  data:Isolicitud[]
+  data:Isolicitud[],
+  dataOptions?:Options[]
 }
 
 const options: ApexCharts.ApexOptions = {
@@ -28,6 +34,13 @@ const options: ApexCharts.ApexOptions = {
   
 export default function ChartDonut({data}:Props)
 {
+    /*
+    const filters:string[] = []
+    dataOptions.forEach(element => {
+      options.labels?.push(element.label)
+      filters.push(element.filter)
+    });
+    */
     const ingles = data.filter(objeto => objeto.idioma === 'INGLES').length;
     const portugues = data.filter(objeto => objeto.idioma === 'PORTUGUES').length;
     const italiano = data.filter(objeto => objeto.idioma === 'ITALIANO').length;

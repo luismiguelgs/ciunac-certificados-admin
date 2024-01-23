@@ -1,11 +1,10 @@
 import React from 'react'
 import Icertificado from '../Interfaces/Icertificado';
-import { firestore } from '../Services/firebase';
-import { collection, onSnapshot } from 'firebase/firestore';
 import { Icurso } from '../Interfaces/Icurso';
 import Ifacultad from '../Interfaces/Ifacultad';
 import FacultadesService from '../Services/sFacultades';
 import CursosService from '../Services/sCursos';
+import CertificadosService from '../Services/sCertificados';
 
 type Props = {
     setCertificados:React.Dispatch<React.SetStateAction<Icertificado[]>>,
@@ -15,21 +14,11 @@ type Props = {
 
 export default function Preloader({setCertificados, setCursos, setFacultades}:Props) 
 {
-    const db = collection(firestore, 'certificados');
     React.useEffect(()=>{
-        onSnapshot(db, (data)=>{
-          setCertificados(data.docs.map((item)=>{
-            return { ...item.data(), id:item.id  } as Icertificado
-          }));
-        });
+        CertificadosService.fetchItems(setCertificados)
+        CursosService.fetchItems(setCursos)
+        FacultadesService.fetchItems(setFacultades)
     },[]);
-
-    CursosService.fetchItems(setCursos)
-
-    FacultadesService.fetchItems(setFacultades)
-    
-    
-    
 
     return (
         <React.Fragment>
