@@ -9,6 +9,7 @@ import DialogFull from "../components/Dialogs/DialogFull";
 import { Icurso } from "../Interfaces/Icurso";
 import Icertificado from "../Interfaces/Icertificado";
 import Ifacultad from "../Interfaces/Ifacultad";
+import Buscador from "../components/Buscador";
 
 const columns: Column[] = [
   { id: 'solicitud', label: 'Solicitud', minWidth: 70, align: 'left' },
@@ -17,7 +18,7 @@ const columns: Column[] = [
   { id: 'nombres', label: 'Nombres', minWidth: 120 },
   { id: 'idioma', label: 'Idioma', minWidth: 25, align: 'left' },
   { id: 'nivel', label: 'Nivel', minWidth: 25, align: 'left' },
-  
+
 ];
 
 type Props = {
@@ -35,14 +36,19 @@ export default function Certificados({cursos, certificados, facultades}:Props)
   const [ID, setID] = React.useState<string| undefined>('');
   const [openDialogD, setOpenDialogD] = React.useState<boolean>(false);
   const [openDialogF, setOpenDialogF] = React.useState<boolean>(false);
-  //navigation
-  //const navigate = useNavigate()
+
   //data y bd
   const [data, setData] = React.useState<Isolicitud[]>([]);
-
+  const [dataTemp, setDataTemp] = React.useState<Isolicitud[]>([]);
+  
   React.useEffect(()=>{
     SolicitudesService.fetchItemQuery(setData, searchParams.get('estado'))
   },[searchParams.get('estado')]);
+
+  React.useEffect(() => {
+    // Este efecto se ejecutará cuando 'data' cambie
+    setDataTemp(data);
+  }, [data]);
 
   const handleDelete = (id:string | undefined) =>{
     setID(id)
@@ -51,7 +57,6 @@ export default function Certificados({cursos, certificados, facultades}:Props)
   const handleEdit = (id:string | undefined) =>{
       setOpenDialogF(true)
       setID(id)
-      //navigate(`/solicitudes/${id}`)
   }
   const deleteFunc = () => {
     SolicitudesService.deleteItem(ID)
@@ -60,9 +65,14 @@ export default function Certificados({cursos, certificados, facultades}:Props)
 
   return (
     <React.Fragment>
-      <Typography variant="h4" gutterBottom>{searchParams.get('estado')}</Typography>
-      {data && <DataTable 
-            rows={data} 
+      {
+        searchParams.get('estado') === 'NUEVO' ? (<Typography variant="h4" gutterBottom>SOLICITUDES NUEVAS</Typography>) :
+        searchParams.get('estado') === 'ELABORADO' ? (<Typography variant="h4" gutterBottom>SOLICITUDES ELABORADAS</Typography>) :
+        (<Typography variant="h4" gutterBottom>SOLICITUDES ENTREGADAS</Typography>) 
+      }
+      <Buscador  data={dataTemp} setData={setDataTemp} aux={data}/>
+      {dataTemp && <DataTable 
+            rows={dataTemp} 
             columns={columns} 
             handleDelete={handleDelete} 
             handleEdit={handleEdit} 

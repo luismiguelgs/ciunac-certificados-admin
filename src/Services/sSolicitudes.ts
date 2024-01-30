@@ -36,7 +36,13 @@ export default class SolicitudesService
       }));
     });
   }
-  public static fetchItemQuery(setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,searchParams:string | null,order=true)
+  public static fetchItemQuery(
+    setData:React.Dispatch<React.SetStateAction<Isolicitud[]>>,
+    searchParams:string | null,
+    order=true,
+    //temp=false,
+    //setTempData?:React.Dispatch<React.SetStateAction<Isolicitud[]>>,
+  )
   {
     let itemQuery: Query
     if(order){
@@ -49,6 +55,13 @@ export default class SolicitudesService
       setData(data.docs.map((item)=>{
         return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)  } as Isolicitud
       }));
+      /*
+      if(temp){
+        setTempData(data.docs.map((item)=>{
+          return { ...item.data(), id:item.id, creado:changeDate(item.data().creado,true)  } as Isolicitud
+        }));
+      }
+      */
     });
   }
   public static async newItem(obj:Isolicitud)
