@@ -3,9 +3,6 @@ import { TransitionProps } from '@mui/material/transitions';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DetalleSolicitud from '../DetalleSolicitud/DetalleSolicitud';
-import Icertificado from '../../Interfaces/Icertificado';
-import Ifacultad from '../../Interfaces/Ifacultad';
-import { Icurso } from '../../Interfaces/Icurso';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -21,13 +18,11 @@ type Props = {
     open:boolean,
     title:string,
     id:string | undefined,
-    certificados: Icertificado[],
-    facultades: Ifacultad[],
-    cursos: Icurso[]
 }
 
-export default function DialogFull({setOpen,open,title,id, facultades, certificados, cursos}:Props) 
+export default function DialogFull({setOpen,open,title,id}:Props) 
 {
+    
     const handleClose = () => {
         setOpen(false);
     };
@@ -47,8 +42,6 @@ export default function DialogFull({setOpen,open,title,id, facultades, certifica
                 <div>
                     <DetalleSolicitud 
                         id={id} 
-                        certificados={certificados} 
-                        facultades={facultades} cursos={cursos}
                         setOpen={setOpen}
                     />
                 </div>

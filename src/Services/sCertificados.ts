@@ -1,5 +1,5 @@
 import React from 'react';
-import Icertificado from '../Interfaces/Icertificado';
+import { Icertificado } from '../Interfaces/Types';
 import { firestore } from './firebase';
 import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot } from 'firebase/firestore'
 

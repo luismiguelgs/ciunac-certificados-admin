@@ -4,25 +4,16 @@ import React, { useState, useEffect } from "react";
 import { Isolicitud } from '../Interfaces/Isolicitud';
 import BasicInfo from '../components/DetalleSolicitud/BasicInfo';
 import FinInfo from '../components/DetalleSolicitud/FinInfo';
-import DialogAdm from '../components/Dialogs/DialogAdm';
-import SnackBarAdm from '../components/MUI/SnackBarAdm';
 import Info2010 from '../components/DetalleSolicitud/Info2010';
-import Icertificado from '../Interfaces/Icertificado';
-import Ifacultad from '../Interfaces/Ifacultad';
-import { Icurso } from '../Interfaces/Icurso';
 import SolicitudesService from '../Services/sSolicitudes';
 import { valEditarSolicitud } from '../Services/validation';
 import MyAccordion, { PanelData } from '../components/MUI/MyAccordion';
 import { ArrowBackIcon, EditNoteIcon, SaveIcon } from '../Services/icons';
+import { MySnackBar, MyDialog } from '../components/MUI';
 
-type Props = {
-    certificados:Icertificado[],
-    facultades: Ifacultad[],
-    cursos:Icurso[]
-}
-
-export default function DetalleSolicitudes({certificados, facultades, cursos}:Props)
+export default function DetalleSolicitudes()
 {
+    
     //history
     const navigate = useNavigate()
     //manejo de snackbar
@@ -75,12 +66,12 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
     const panels:PanelData[] = [
         {
             title: 'Información de Alumno',
-            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>,
+            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} />,
             disabled: false
         },
         {
             title: 'Información de solicitud',
-            content: <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>,
+            content: <FinInfo item={item} handleChange={handleChange} edit={edit} />,
             disabled: false
         },
         {
@@ -129,13 +120,14 @@ export default function DetalleSolicitudes({certificados, facultades, cursos}:Pr
                 </Button>
             </Grid>
         </Grid>
-        <SnackBarAdm open={openS} setOpen={setOpenS} content='Verificar que todos los datos esten ingresados' />
-        <DialogAdm 
+        <MySnackBar open={openS} setOpen={setOpenS} content='Verificar que todos los datos esten ingresados' />
+        <MyDialog 
+            type='ALERT' 
             title='Guardar Registro' 
-            content='Confirma guardar los datos actuales?' 
-            open={openD}
-            setOpen={setOpenD}
-            actionFunc={saveItem}/>
+            content='¿Confirma guardar los datos actuales?' 
+            open={openD} 
+            setOpen={setOpenD} 
+            actionFunc={saveItem} />
       </>
     )
 }

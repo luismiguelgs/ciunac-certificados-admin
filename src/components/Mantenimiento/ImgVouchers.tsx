@@ -1,5 +1,6 @@
 import React from 'react'
 import Imagenes from './Imagenes'
+import { Column } from '../MUI/DataTable';
 
 const columns: Column[] = [
     { id: 'apellidos', label: 'Apellidos', minWidth: 150 },
@@ -9,7 +10,6 @@ const columns: Column[] = [
     { id: 'estado', label: 'Estado', minWidth: 30 }
 ];
   
-
 export default function ImgVouchers() {
   return (
     <React.Fragment>

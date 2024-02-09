@@ -2,6 +2,14 @@ import React from 'react';
 import { Paper, Table,TableBody,TableCell,TableContainer,TableHead,TablePagination,TableRow, IconButton } from '@mui/material';
 import { DeleteIcon, EditIcon, KeyboardIcon, PublicIcon } from '../../Services/icons';
 
+export interface Column {
+  id: string;
+  label: string;
+  minWidth?: number;
+  align?: 'left' | 'right';
+  format?: (value: number) => string;
+}
+
 type Props = {
     rows:any[],
     columns:Column[],

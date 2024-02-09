@@ -1,15 +1,12 @@
 import React from 'react'
-import { Icurso } from '../../Interfaces/Icurso'
-import DataTable from '../MUI/DataTable'
+import { Icurso } from '../../Interfaces/Types'
+import DataTable, { Column } from '../MUI/DataTable'
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DialogAdm from '../Dialogs/DialogAdm';
 import CursosService from '../../Services/sCursos';
-import DialogForm from './DialogForm';
-
-type Props={
-    cursos:Icurso[]
-}
+import { useStateContext } from '../../contexts/ContextProvider';
+import MyDialog from '../MUI/MyDialog';
+import FormDialog from './FormDialog';
 
 const columns: Column[] = [
     { id: 'value', label: 'Valor', minWidth: 80 },
@@ -17,8 +14,10 @@ const columns: Column[] = [
     { id: 'creado', label: 'Creado', minWidth: 100 },
 ];
 
-export default function OpcCursos({cursos}:Props) 
+export default function OpcCursos() 
 {
+    const { cursos } = useStateContext()
+
     const [item, setItem] = React.useState<Icurso>({value:'', label:''});
     //dialog
     const [ID, setID] = React.useState<string| undefined>('');
@@ -67,21 +66,20 @@ export default function OpcCursos({cursos}:Props)
                 handleEdit={handleEdit} 
                 action={true}/>
         }
-        <DialogAdm
-              title='Borrar Registro' 
-              content="Confirma borrar el registro?"
-              open={openD} 
-              setOpen={setOpenD} 
-              actionFunc={deleteFunc}/>
-        <DialogForm
-            item={item}
-            setItem={setItem}
-            opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
-            contentText='' 
+        <MyDialog 
+            type='ALERT'
+            title='Borrar Registro'
+            content="Confirma borrar el registro?"
+            open={openD}
+            setOpen={setOpenD}
+            actionFunc={deleteFunc} /> 
+        <MyDialog
+            type='FORM'
+            title={ID === '' ? 'Nuevo Item' : 'Editar Item'}
             open={openDF}
             setOpen={setOpenDF}
-            actionFunc={handleSave}
-        />
+            content={<FormDialog item={item} setItem={setItem} opt={ID === '' ? 'NUEVO' : 'EDITAR'} />}
+            actionFunc={handleSave} />
     </React.Fragment>
   )
 }

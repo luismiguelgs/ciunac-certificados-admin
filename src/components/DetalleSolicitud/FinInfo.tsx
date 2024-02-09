@@ -1,19 +1,20 @@
 import { Grid, TextField, InputAdornment } from '@mui/material'
 import { Isolicitud } from '../../Interfaces/Isolicitud'
-import Icertificado from '../../Interfaces/Icertificado'
 import Link from '@mui/material/Link';
 import pdfLogo from '../../assets/pdf.png'
 import MySelect from '../MUI/MySelect';
+import { useStateContext } from '../../contexts/ContextProvider';
 
 type Props={
     item:Isolicitud
     handleChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void
     edit:boolean,
-    tipoSolicitud:Icertificado[]
 }
 
-export default function FinInfo({item,handleChange, edit, tipoSolicitud}:Props)
+export default function FinInfo({item,handleChange, edit}:Props)
 {
+    const { certificados } = useStateContext()
+
     const archivo = item.voucher?.split('?')[0].slice(-3);
 
     if (item.creado && item.creado.seconds) {
@@ -38,7 +39,7 @@ export default function FinInfo({item,handleChange, edit, tipoSolicitud}:Props)
                         label='Tipo de Solicitud'
                         handleChange={handleChange}
                         value={item.solicitud}
-                        data={tipoSolicitud}
+                        data={certificados}
                     />
                 </Grid>
                 <Grid item xs={12}>

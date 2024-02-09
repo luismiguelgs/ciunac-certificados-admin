@@ -4,26 +4,20 @@ import SolicitudesService from '../../Services/sSolicitudes';
 import { valEditarSolicitud } from '../../Services/validation';
 import { Button, Grid } from '@mui/material';
 import BasicInfo from './BasicInfo';
-import Icertificado from '../../Interfaces/Icertificado';
-import Ifacultad from '../../Interfaces/Ifacultad';
-import { Icurso } from '../../Interfaces/Icurso';
 import FinInfo from './FinInfo';
 import Info2010 from './Info2010';
-import SnackBarAdm from '../MUI/SnackBarAdm';
-import DialogAdm from '../Dialogs/DialogAdm';
 import MyAccordion, { PanelData } from '../MUI/MyAccordion';
 import { ArrowBackIcon, EditNoteIcon, SaveIcon } from '../../Services/icons';
+import { MyDialog, MySnackBar } from '../MUI';
 
 type Props = {
     id:string | undefined,
-    certificados:Icertificado[],
-    facultades: Ifacultad[],
-    cursos:Icurso[],
     setOpen:React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function DetalleSolicitud({id, facultades, certificados, cursos, setOpen}:Props) 
+export default function DetalleSolicitud({id, setOpen}:Props) 
 {
+    
     //manejo de snackbar
     const [openS, setOpenS] = React.useState<boolean>(false); 
     
@@ -68,12 +62,12 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
     const panels:PanelData[] = [
         {
             title: 'Información de Alumno',
-            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} facultades={facultades} cursos={cursos}/>,
+            content: <BasicInfo item={item} handleChange={handleChange} edit={edit} />,
             disabled: false
         },
         {
             title: 'Información de solicitud',
-            content: <FinInfo item={item} handleChange={handleChange} edit={edit} tipoSolicitud={certificados}/>,
+            content: <FinInfo item={item} handleChange={handleChange} edit={edit} />,
             disabled: false
         },
         {
@@ -127,13 +121,14 @@ export default function DetalleSolicitud({id, facultades, certificados, cursos, 
                 </Grid>
                 ):(<div>Loading...</div>)
             }
-                <SnackBarAdm open={openS} setOpen={setOpenS} content='Verificar que todos los datos esten ingresados' />
-                <DialogAdm 
-                    title='Guardar Registro' 
-                    content='Confirma guardar los datos actuales?' 
-                    open={openD}
-                    setOpen={setOpenD}
-                    actionFunc={saveItem}/>
+            <MySnackBar open={openS} setOpen={setOpenS} content='Verificar que todos los datos esten ingresados' />
+            <MyDialog 
+                type='ALERT' 
+                title='Guardar Registro' 
+                content='Confirma guardar los datos actuales?' 
+                open={openD} 
+                setOpen={setOpenD} 
+                actionFunc={saveItem} />
         </React.Fragment>
     )
 }

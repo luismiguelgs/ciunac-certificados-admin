@@ -1,9 +1,9 @@
 import React from 'react'
 import { TextField,Grid, Paper,Button } from '@mui/material';
-import { ITexto } from '../../Interfaces/ITextos';
 import { styled } from '@mui/material/styles';
 import { EditIcon, SaveIcon } from '../../Services/icons';
 import TextosService from '../../Services/sTextos';
+import { ITexto } from '../../Interfaces/Types';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

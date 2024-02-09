@@ -1,20 +1,19 @@
 import { Isolicitud } from "../../Interfaces/Isolicitud"
 import { Grid, TextField, Chip } from '@mui/material'
 import { ESTADO, NIVEL } from "../../Services/constants"
-import Ifacultad from "../../Interfaces/Ifacultad"
-import { Icurso } from "../../Interfaces/Icurso"
 import { FaceIcon, MilitaryTechIcon, OnlinePredictionIcon, PowerIcon, TextSnippetIcon } from "../../Services/icons"
 import MySelect from "../MUI/MySelect"
+import { useStateContext } from "../../contexts/ContextProvider"
 
 type Props={
     item:Isolicitud
     handleChange(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>):void
     edit:boolean,
-    facultades:Ifacultad[],
-    cursos:Icurso[]
 }
-export default function BasicInfo({item, handleChange, edit, facultades, cursos}:Props)
+export default function BasicInfo({item, handleChange, edit}:Props)
 {
+    const {cursos, facultades} = useStateContext()
+
     return(
         <Grid container spacing={2} >
             <Grid item xs={12}>

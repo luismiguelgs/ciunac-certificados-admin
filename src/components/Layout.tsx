@@ -1,12 +1,22 @@
-import {Box, Toolbar, CssBaseline, AppBar, IconButton, Typography} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import {Box, Toolbar, CssBaseline } from '@mui/material';
 import MenuLateral from './MenuLateral';
 import { DRAWER_WIDTH } from '../Services/constants';
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+import MyAppBar, { IconMenu } from './MUI/MyAppBar';
+import { SettingsIcon } from '../Services/icons';
 
 export default function Layout()
 {
+    const navigate = useNavigate()
+    const icons:IconMenu[] = [
+        {
+            label:"Opciones",
+            icon: <SettingsIcon />,
+            handleClick: () => navigate('/opciones')
+        },
+    ]
+
     const [mobileOpen, setMobileOpen] = React.useState(false);
   
     const handleDrawerToggle = () => {
@@ -16,25 +26,13 @@ export default function Layout()
     return (
         <Box sx={{ display: 'flex', }}>
           <CssBaseline />
-          <AppBar 
-            position="fixed"
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                CIUNAC - CERTIFICADOS ADMIN
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <MyAppBar 
+            title='CIUNAC - CERTIFICADOS ADMIN'
+            menuIcon={true}
+            handleClickMenu={handleDrawerToggle}
+            drawer={true}
+            icons={icons}
+          />
           <MenuLateral mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}/>
           <Box
             component="main"
@@ -44,5 +42,5 @@ export default function Layout()
             <Outlet />
           </Box>
         </Box>
-      );
+    );
 }

@@ -9,9 +9,9 @@ type Props = {
     severity?:"error"|"info"|"success"|"warning"
 }
 
-export default function SnackBarAdm({content, open, setOpen, severity='info'}:Props) 
+export default function MySnackBar({content, open, setOpen, severity='info'}:Props) 
 {
-    const handleClose = (/*event?: React.SyntheticEvent | Event*/) => {
+    const handleClose = () => {
         setOpen(false);
     };
 

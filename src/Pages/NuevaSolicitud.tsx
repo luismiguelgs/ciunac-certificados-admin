@@ -1,22 +1,14 @@
 import React from 'react'
 import { Box, Grid, Button } from '@mui/material';
 import { Isolicitud } from '../Interfaces/Isolicitud';
-import Icertificado from '../Interfaces/Icertificado';
-import { Icurso } from '../Interfaces/Icurso';
-import Ifacultad from '../Interfaces/Ifacultad';
 import { useNavigate } from 'react-router-dom'
 import { IsolicitudVal } from '../Interfaces/IsolicitudVal';
 import { valNuevaSolicitud } from '../Services/validation';
 import SolicitudesService from '../Services/sSolicitudes';
-import DialogAdm from '../components/Dialogs/DialogAdm';
 import NuevaSolicitudForm from '../components/NuevaSolicitud/NuevaSolicitudForm';
 import { ArrowBackIcon, SaveIcon } from '../Services/icons';
+import MyDialog from '../components/MUI/MyDialog';
 
-type Props = {
-    tipoSolicitud:Icertificado[],
-    cursos:Icurso[],
-    facultades: Ifacultad[]
-}
 const NEW_OBJ = {solicitud:'',apellidos:'',nombres:'',dni:'',celular:'',email: '',idioma:'',numero_voucher: '',nivel:'',trabajador:false,fecha_pago: '',
     pago:'0',facultad:'PAR',codigo: '',creado:'', modificado:''
 }
@@ -25,7 +17,7 @@ const VAL_OBJ = {solicitud:false, nombres:false, apellidos:false, dni:false, cel
     fecha_pago:false, codigo:false
 }
 
-export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props) 
+export default function NuevaSolicitud() 
 {
     //router history
     const navigate = useNavigate()
@@ -56,10 +48,7 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
     return (
         <React.Fragment>
             <Box>
-                <NuevaSolicitudForm 
-                    tipoSolicitud={tipoSolicitud} 
-                    cursos={cursos} 
-                    facultades={facultades} 
+                <NuevaSolicitudForm
                     val={val} 
                     item={item}
                     setItem={setItem}
@@ -88,7 +77,7 @@ export default function NuevaSolicitud({tipoSolicitud,cursos, facultades}:Props)
                     </Grid>
                 </Grid>
             </Box>
-            <DialogAdm open={open} setOpen={setOpen} content={texto} title='Nueva Solicitud' alert={true}/>
+            <MyDialog open={open}  setOpen={setOpen} content={texto} title='Nueva Solicitud' type='SIMPLE' />
         </React.Fragment>
     )
 }

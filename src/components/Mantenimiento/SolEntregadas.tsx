@@ -1,5 +1,6 @@
 import React from 'react'
 import Imagenes from './Imagenes'
+import { Column } from '../MUI/DataTable';
 
 const columns: Column[] = [
     { id: 'solicitud', label: 'Solicitud', minWidth: 150 },

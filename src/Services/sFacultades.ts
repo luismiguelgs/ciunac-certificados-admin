@@ -1,5 +1,5 @@
 import React from 'react';
-import Ifacultad from '../Interfaces/Ifacultad';
+import { Ifacultad } from '../Interfaces/Types';
 import { firestore } from './firebase';
 import { collection, onSnapshot, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc} from 'firebase/firestore'
 import { changeDate } from './util';

@@ -2,7 +2,7 @@ import React from 'react'
 import { firestore } from '../../Services/firebase';
 import { collection, onSnapshot, query, where} from 'firebase/firestore';
 import I2010 from '../../Interfaces/I2010';
-import DataTable from '../MUI/DataTable';
+import DataTable, { Column } from '../MUI/DataTable';
 
 type Props = {
     id:string

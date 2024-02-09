@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icurso } from '../Interfaces/Icurso';
+import { Icurso } from '../Interfaces/Types';
 import { firestore } from './firebase';
 import { collection, doc, updateDoc, serverTimestamp, addDoc, deleteDoc, getDoc, onSnapshot } from 'firebase/firestore'
 import { changeDate } from './util';

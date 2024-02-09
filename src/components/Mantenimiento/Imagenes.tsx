@@ -1,11 +1,11 @@
 import React from 'react'
 import { Isolicitud } from '../../Interfaces/Isolicitud';
-import DataTable from "../MUI/DataTable";
+import DataTable, { Column } from "../MUI/DataTable";
 import { TextField, Button, Grid, Backdrop, CircularProgress } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
-import DialogAdm from '../Dialogs/DialogAdm';
 import SolicitudesService from '../../Services/sSolicitudes';
 import StorageService from '../../Services/StorageService';
+import { MyDialog } from '../MUI';
 
 type Props = {
   columns: Column[]
@@ -94,12 +94,14 @@ export default function Imagenes({columns, elementos, opcion}:Props)
             </Grid>
           </Grid>
           <DataTable columns={columns} rows={data} action={false} />
-          <DialogAdm 
+          <MyDialog 
+            type='ALERT'
             title='Eliminar imágenes' 
             content={`Desea eliminar las ${elementos} contenidas desde la fecha: ${fechaInicial} hasta la fecha: ${fechaFinal}`}
             open={openD}
             setOpen={setOpenD}
-            actionFunc={handleDelete}/>
+            actionFunc={handleDelete}
+          />
           <Backdrop
             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={openB}

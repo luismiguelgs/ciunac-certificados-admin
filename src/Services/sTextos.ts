@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITexto } from '../Interfaces/ITextos';
+import { ITexto } from '../Interfaces/Types';
 import { firestore } from './firebase';
 import { collection, doc, updateDoc, serverTimestamp, onSnapshot } from 'firebase/firestore'
 

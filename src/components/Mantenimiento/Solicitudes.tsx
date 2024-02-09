@@ -1,11 +1,11 @@
 import React from "react";
 import { Isolicitud } from "../../Interfaces/Isolicitud";
-import DataTable from "../MUI/DataTable";
+import DataTable, { Column } from "../MUI/DataTable";
 import { useNavigate } from "react-router-dom";
-import DialogAdm from "../Dialogs/DialogAdm";
 import { Grid, Button, TextField, InputAdornment } from '@mui/material';
 import SolicitudesService from "../../Services/sSolicitudes";
 import { AddIcon, SearchIcon } from "../../Services/icons";
+import { MyDialog } from "../MUI";
 
 const columns: Column[] = [
   { id: 'solicitud', label: 'Solicitud', minWidth: 120 },
@@ -83,12 +83,13 @@ export default function Solicitudes()
           handleDelete={handleDelete} 
           handleEdit={handleEdit} 
           action={true}/>
-        <DialogAdm 
-          title='Borrar Registro' 
-          content="Confirma borrar el registro?"
-          open={openD} 
+        <MyDialog 
+          type="ALERT" 
+          title="Borrar Registro" 
+          content="Confirma borrar el registro?" 
           setOpen={setOpenD} 
-          actionFunc={deleteFunc}/>
+          open={openD} 
+          actionFunc={deleteFunc} />
       </>
     )
 }

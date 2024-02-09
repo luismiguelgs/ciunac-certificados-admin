@@ -1,22 +1,22 @@
 import React from 'react'
-import DialogAdm from '../Dialogs/DialogAdm';
-import DataTable from '../MUI/DataTable';
+import DataTable, { Column } from '../MUI/DataTable';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import FacultadesService from '../../Services/sFacultades';
-import Ifacultad from '../../Interfaces/Ifacultad';
-import DialogForm from './DialogForm';
+import { Ifacultad } from '../../Interfaces/Types';
+import { useStateContext } from '../../contexts/ContextProvider';
+import MyDialog from '../MUI/MyDialog';
+import FormDialog from './FormDialog';
 
 const columns: Column[] = [
     { id: 'value', label: 'Valor', minWidth: 80 },
     { id: 'label', label: 'Etiqueta', minWidth: 100 },
   ];
 
-type Props = {
-    data:Ifacultad[]
-}
-export default function OpcFacultades({data}:Props) 
+export default function OpcFacultades() 
 {
+    const {facultades} = useStateContext()
+
     //data y bd
     const [item, setItem] = React.useState<Ifacultad>({value:'', label:''});
 
@@ -33,7 +33,7 @@ export default function OpcFacultades({data}:Props)
         setOpenD(true)
     }
     const handleEdit = (id:string | undefined) =>{
-        setItem(data.filter(d=>id===d.id)[0])
+        setItem(facultades.filter(d=>id===d.id)[0])
         setID(id)
         setOpenDF(true)
     }
@@ -61,26 +61,25 @@ export default function OpcFacultades({data}:Props)
                 Nueva Facultad
             </Button>
             <DataTable 
-                rows={data} 
+                rows={facultades} 
                 columns={columns} 
                 handleDelete={handleDelete} 
                 handleEdit={handleEdit} 
                 action={true}/>
-            <DialogAdm
-              title='Borrar Registro' 
-              content="Confirma borrar el registro?"
-              open={openD} 
-              setOpen={setOpenD} 
-              actionFunc={deleteFunc}/>
-            <DialogForm 
-                item={item}
-                setItem={setItem}
-                opt={ID=='' ? 'NUEVO' : 'EDITAR'}
-                contentText=''
+            <MyDialog 
+                type='ALERT'
+                title='Borrar Registro'
+                content="Confirma borrar el registro?"
+                open={openD}
+                setOpen={setOpenD}
+                actionFunc={deleteFunc} /> 
+            <MyDialog
+                type='FORM'
+                title={ID === '' ? 'Nuevo Item' : 'Editar Item'}
                 open={openDF}
                 setOpen={setOpenDF}
-                actionFunc={handleSave}
-            />
+                content={<FormDialog item={item} setItem={setItem} opt={ID === '' ? 'NUEVO' : 'EDITAR'} />}
+                actionFunc={handleSave} />
         </React.Fragment>
     )
 }

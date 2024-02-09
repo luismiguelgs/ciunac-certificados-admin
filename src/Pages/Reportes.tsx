@@ -1,6 +1,6 @@
 import React from 'react'
 import { Isolicitud } from "../Interfaces/Isolicitud";
-import DataTable from "../components/MUI/DataTable";
+import DataTable, { Column } from "../components/MUI/DataTable";
 import { Grid, Button, Typography, TextField } from '@mui/material';
 import { exportToExcel } from "../Services/util";
 import { CloudDownloadIcon } from '../Services/icons';
@@ -27,7 +27,7 @@ export default function Reportes()
     
     React.useEffect(()=>{
         SolicitudesService.fetchItemQueryDate(setData,fechaInicial,fechaFinal)
-      },[fechaInicial,fechaFinal]);
+    },[fechaInicial,fechaFinal]);
 
     //aumenta un dia la fecha final
     const handleFechaFinalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,10 +85,9 @@ export default function Reportes()
                   name="fecha"
                   label="Fecha Final"
                   helperText={false && "Ingrese la fecha válida"}
-                />
+              />
             </Grid>
           </Grid>
-          
           <DataTable columns={columns} rows={data} action={false} />
           <Button onClick={handleExport} variant="contained" endIcon={<CloudDownloadIcon />} sx={{mt:1}}>
             Exportar a Excel

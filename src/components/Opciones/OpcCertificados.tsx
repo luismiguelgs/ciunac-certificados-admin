@@ -1,15 +1,12 @@
 import React from 'react'
-import DialogAdm from '../Dialogs/DialogAdm';
-import DataTable from '../MUI/DataTable';
+import DataTable, { Column } from '../MUI/DataTable';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CertificadosService from '../../Services/sCertificados';
-import Icertificado from '../../Interfaces/Icertificado';
-import DialogForm from './DialogForm';
-
-type Props = {
-    certificados:Icertificado[]
-}
+import { useStateContext } from '../../contexts/ContextProvider';
+import { Icertificado } from '../../Interfaces/Types';
+import MyDialog from '../MUI/MyDialog';
+import FormDialog from './FormDialog';
 
 const columns: Column[] = [
     { id: 'value', label: 'Valor', minWidth: 80 },
@@ -17,8 +14,10 @@ const columns: Column[] = [
     { id: 'precio', label: 'Precio (S/)', minWidth: 100 },
   ];
 
-export default function OpcCertificados({certificados}:Props) 
+export default function OpcCertificados() 
 {
+    const {certificados} = useStateContext()
+
     const [item, setItem] = React.useState<Icertificado>({value:'', label:'',precio:0});
     //dialog
     const [ID, setID] = React.useState<string| undefined>('');
@@ -66,22 +65,20 @@ export default function OpcCertificados({certificados}:Props)
             handleDelete={handleDelete} 
             handleEdit={handleEdit} 
             action={true}/>
-        <DialogAdm
-            title='Borrar Registro' 
+        <MyDialog 
+            type='ALERT'
+            title='Borrar Registro'
             content="Confirma borrar el registro?"
-            open={openD} 
-            setOpen={setOpenD} 
-            actionFunc={deleteFunc}/>
-        <DialogForm 
-            certificado = {true}
-            item={item}
-            setItem={setItem}
-            opt={ ID=='' ? 'NUEVO' : 'EDITAR' }
-            contentText=''
+            open={openD}
+            setOpen={setOpenD}
+            actionFunc={deleteFunc} /> 
+        <MyDialog
+            type='FORM'
+            title={ID === '' ? 'Nuevo Item' : 'Editar Item'}
             open={openDF}
             setOpen={setOpenDF}
-            actionFunc={handleSave}
-        />
+            content={<FormDialog item={item} setItem={setItem} opt={ID === '' ? 'NUEVO' : 'EDITAR'} certificado={true} />}
+            actionFunc={handleSave} />
     </>
   )
 }
